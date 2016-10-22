@@ -2,6 +2,7 @@
 ==================
   
   * Args option bug fixed
+  * Changelog added
 
 0.0.1 / 2016-10-22
 ==================
