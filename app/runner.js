@@ -4,7 +4,7 @@ module.exports = function(command, dir, options, done) {
 
     var execOptions = {};
     if (dir) execOptions.cwd = dir;
-    if(options.args) command=command+" "+args;
+    if(options.args) command=command+" "+options.args;
     var proc = process.exec(command, execOptions);
 
     var outs = [];
