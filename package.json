@@ -1,0 +1,27 @@
+{
+  "name": "yerbamate",
+  "version": "0.0.1",
+  "description": "A js testing library for command-line interfaces",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angrykoala/yerbamate.git"
+  },
+  "keywords": [
+    "test",
+    "library",
+    "unit",
+    "cli",
+    "command",
+    "line"
+  ],
+  "author": "angrykoala <demiurgosoft@hotmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/angrykoala/yerbamate/issues"
+  },
+  "homepage": "https://github.com/angrykoala/yerbamate#readme"
+}
