@@ -38,6 +38,6 @@ You can also test any other command:
 
 * `loadPackage(module)` Will load your package.json module data, the returned object will contain the path to the `package.json` file, `main` and `start` script as well as `bin` and `scripts` objects from package.json
 
-* `run(command, dir, options, done)` Will run the given command as a child_process in the given path. The options allows you to set callbacks for `stdout` and `stderr` outputs. The callback will return the execution code of the process, an array with all the console outputs and an array with all the error outputs.
+* `run(command, dir, options, done)` Will run the given command as a child_process in the given path. The options allows you to set callbacks for `stdout` and `stderr` outputs, as well as extra space-separated arguments with `args`. The callback will return the execution code of the process, an array with all the console outputs and an array with all the error outputs.
 
 * `isErrorCode(code)` Will return true if the given process code is an error code, false otherwise
