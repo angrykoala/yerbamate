@@ -1,25 +1,25 @@
 var process = require('child_process');
 
 module.exports = function(command, dir, options, done) {
-    var options = {};
-    if (dir) options.cwd = dir;
-    const ls = process.exec(command, options);
+
+    var execOptions = {};
+    if (dir) execOptions.cwd = dir;
+    var proc = process.exec(command, execOptions);
 
     var outs = [];
     var errs = [];
 
-    ls.stdout.on('data', (data) => {
+    proc.stdout.on('data', function(data) {
         outs.push(data);
         if (options.stdout) options.stdout(data);
     });
 
-    ls.stderr.on('data', (data) => {
+    proc.stderr.on('data', function(data) {
         errs.push(data);
         if (options.stderr) options.stderr(data);
     });
 
-    ls.on('close', (code) => {
+    proc.on('close', function(code) {
         done(code, outs, errs);
     });
-
-}
+};

@@ -1,1 +1,15 @@
-//Entry point for yerbamate
+// Yerbamate
+// by @angrykoala
+// The js testing library for command-line interfaces.
+
+var runner=require('./app/runner');
+var loader=require('./app/loader');
+
+
+module.exports={
+    run: runner,
+    loadPackage: loader,
+    isErrorCode: function(code){
+        return code!==0;
+    }
+};
