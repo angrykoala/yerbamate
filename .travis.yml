@@ -1,0 +1,15 @@
+language: node_js
+os:
+    - linux
+    - windows
+    - osx
+node_js:
+    - "stable"
+    - "6.9.1"
+    - "4.6.1"
+    - "0.12.15"
+sudo: false    
+script:
+    - npm test
+after_success:
+    - bash <(curl -s https://codecov.io/bash)

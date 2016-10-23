@@ -26,8 +26,8 @@ function findPackageJson(pmodule, dir) {
         dir: dir,
         main: contents.main ? "node " + contents.main : undefined,
         start: contents.scripts ? contents.scripts.start : undefined,
-        bin: contents.bin,
-        scripts: contents.scripts
+        bin: contents.bin || {},
+        scripts: contents.scripts || {}
     };
 
     else return findPackageJson(pmodule, path.dirname(dir));
@@ -35,5 +35,6 @@ function findPackageJson(pmodule, dir) {
 
 
 module.exports = function(pmodule) {
+    if(!pmodule) throw new Error("yerbamate loader - Not module found");
     return findPackageJson(pmodule);
 };

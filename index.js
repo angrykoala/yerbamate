@@ -9,7 +9,7 @@ var loader=require('./app/loader');
 module.exports={
     run: runner,
     loadPackage: loader,
-    isErrorCode: function(code){
-        return code!==0;
+    successCode: function(code){
+        return code===0;
     }
 };
