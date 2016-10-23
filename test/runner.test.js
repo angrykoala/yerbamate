@@ -75,7 +75,6 @@ describe("Loader", function() {
             errTest.push(data);
         };
 
-
         run("node " + testScript, testDir, {
             stdout: onOut,
             stderr: onErr

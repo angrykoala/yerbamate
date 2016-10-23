@@ -9,11 +9,15 @@ _by @angrykoala_
 
 > The js testing library for command-line interfaces.
 
-Sometimes, you want to add automated tests for your node-based CLI. With _yerbamate_ now you can simply test your bins directly within your favorite testing framework like _mocha_  without the mess of creating complex _gulp_ pipelines or adding extra scripts. Just with old good Javascript.
+Sometimes, you want to add automated tests for your node-based CLI. With _Yerbamate_ now you can simply test your programs directly within your favorite testing framework like _mocha_ without the mess of creating complex gulp pipelines or adding extra bash scripts. Just with old good Javascript.
 
+Yerbamate consists in a **Runner** for asyncronous execution of commands and a **Loader** to easily import the information of your _package.json_ without hard-coding paths and variables in your tests. 
+
+## Installation
+To install yerbamate, simply execute `npm install --save-dev yerbamate` in your node project.
 
 ## Usage
-With _yerbamate_ you can easily test commands from your favorite Javascript testing framework.
+With _yerbamate_ you can easily test commands from your favorite Javascript testing framework simply importing it with `require('yerbamate')` and calling `yerbamate.run`.
 
 ```js
 var yerbamate=require('yerbamate');
@@ -24,7 +28,7 @@ yerbamate.run("cat my_file.md",null,{},function(code,out,errs){
 });
 ```
 
-_Yerbamate_ also provides easy access to you package.json defined scripts and commands, so you can test your module easily.
+_Yerbamate_ also provides easy access to you package.json defined scripts and commands, so you can test your module easily with `yerbamate.loadPackage`.
 
 ```js
 var yerbamate=require('yerbamate');
@@ -39,13 +43,26 @@ yerbamate.run(pkg.start, pkg.dir, {}, function(code,out,errs){
 });
 ```
 
-You can also test any other command:
 
+## Documentation
 
-### Documentation
-
-* `loadPackage(module)` Will load your package.json module data, the returned object will contain the path to the `package.json` file, `main` and `start` script as well as `bin` and `scripts` objects from package.json
+* `loadPackage(module)` Will load your package.json module data, the returned object will contain the path to the `package.json` file, `main` and `start` script as well as `bin` and `scripts` objects from package.json.
 
 * `run(command, dir, options, done)` Will run the given command as a child_process in the given path. The options allows you to set callbacks for `stdout` and `stderr` outputs, as well as extra space-separated arguments with `args`. The callback will return the execution code of the process, an array with all the console outputs and an array with all the error outputs.
 
-* `successCode(code)` Will return true if the given process code is 0, false otherwise
+* `successCode(code)` Will return true if the given process code is 0, false otherwise.
+
+## Contributors
+If you want to contribute to yerbamate please:   
+
+1. Read [CONTRIBUTING.md](CONTRIBUTING.md).
+2. Fork from [dev branch](https://github.com/angrykoala/yerbamate/tree/dev).
+3. Make sure tests passes before pull request.
+4. Check the opened and closed issues before creating one.
+
+Thanks for your help!
+
+## Acknowledgments
+* [pkginfo](https://github.com/indexzero/node-pkginfo) as inspiration for yerbamate loader.
+
+>Yerbamate is developed under GNU GPL-3 license by @angrykoala 
