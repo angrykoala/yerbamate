@@ -21,7 +21,7 @@ module.exports = function(command, dir, options, done) {
         });
 
         proc.on('close', function(code) {
-            done(code, outs, errs);
+            if(done) done(code, outs, errs);
     
             if (code === 0) {
                 resolve(outs);
