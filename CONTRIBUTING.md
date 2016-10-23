@@ -6,7 +6,7 @@ How to Contribute
 
 There are many ways you can Contribute to this project!
 
- - [Lock Issues][issues] or help close them
+ - [Create issues][issues] or help close them
  - Fork, Enhance, Fix Bugs, and send in [Pull Requests][pr]
  - Help write Tests or improve Examples / Documentation
  - Spread the word :heart:
@@ -43,7 +43,6 @@ Want to fix a bug, implement a feature or help with the tests / docs? Read this 
 ## Finally, Thank you!
 
 It means a lot to us that you took time out to improve this package and contribute back to the community. :tada:
-
 
 
 ### Relevant Links
