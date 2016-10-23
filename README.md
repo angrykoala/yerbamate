@@ -50,6 +50,8 @@ yerbamate.run(pkg.start, pkg.dir, {}, function(code,out,errs){
 
 * `run(command, dir, options, done)` Will run the given command as a child_process in the given path. The options allows you to set callbacks for `stdout` and `stderr` outputs, as well as extra space-separated arguments with `args`. The callback will return the execution code of the process, an array with all the console outputs and an array with all the error outputs.
 
+  * The returned arrays stdout and stderr will return a different element per line break. Empty line-breaks will be ignored.
+
 * `successCode(code)` Will return true if the given process code is 0, false otherwise.
 
 ## Contributors
