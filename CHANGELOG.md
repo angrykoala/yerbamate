@@ -1,6 +1,7 @@
 0.1.0 / 2016-10-23
 ==================
 
+  * Readme improved
   * Badges added to Readme
   * Added CI
   * Unit tests added
