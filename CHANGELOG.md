@@ -1,6 +1,7 @@
 0.1.0 / 2016-10-24
 ==================
 
+  * Cleaned stdout and stderr on runner
   * Readme improved
   * Badges added to Readme
   * Added CI
