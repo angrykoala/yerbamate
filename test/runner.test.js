@@ -16,20 +16,20 @@ describe("Runner", function() {
         assert.strictEqual(code, 0);
         assert.lengthOf(outs, 2);
         assert.lengthOf(errs, 1);
-        assert.strictEqual(outs[0], "Example js running\n");
-        assert.strictEqual(errs[0], "Warning example\n");
+        assert.strictEqual(outs[0], "Example js running");
+        assert.strictEqual(errs[0], "Warning example");
     }
     it("Execute script", function(done) {
         run("node " + path.join(testDir, testScript), "", {}, function(code, outs, errs) {
             checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "2\n");
+            assert.strictEqual(outs[1], "2");
             done();
         });
     });
     it("Different directory", function(done) {
         run("node " + testScript, testDir, {}, function(code, outs, errs) {
             checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "2\n");
+            assert.strictEqual(outs[1], "2");
             done();
         });
     });
@@ -38,7 +38,7 @@ describe("Runner", function() {
             args: "myargument1 myargument2"
         }, function(code, outs, errs) {
             checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "4\n");
+            assert.strictEqual(outs[1], "4");
             done();
         });
     });
@@ -50,10 +50,10 @@ describe("Runner", function() {
             assert.ok(errs);
             assert.strictEqual(code, 1);
             assert.lengthOf(outs, 2);
-            assert.lengthOf(errs, 2);
-            assert.strictEqual(outs[0], "Example js running\n");
-            assert.strictEqual(errs[0], "Warning example\n");
-            assert.strictEqual(outs[1], "3\n");
+            assert.isAtLeast(errs.length, 2);
+            assert.strictEqual(outs[0], "Example js running");
+            assert.strictEqual(errs[0], "Warning example");
+            assert.strictEqual(outs[1], "3");
             done();
         });
     });
@@ -61,27 +61,29 @@ describe("Runner", function() {
         run(testScript, testDir, {}, function(code, outs, errs) {
             assert.notEqual(code, 0);
             assert.lengthOf(outs, 0);
-            assert.isAtLeast(errs.length, 1)
+            assert.isAtLeast(errs.length, 1);
             done();
-            
+
         });
     });
-    it("stout and stderr hooks", function(done) {
-        var outTest = [];
-        var errTest = [];
+    it("Stout and stderr hooks", function(done) {
+        var outTest = "";
+        var errTest = "";
         var onOut = function(data) {
-            outTest.push(data);
+            outTest += data;
         };
         var onErr = function(data) {
-            errTest.push(data);
+            errTest += data;
         };
 
         run("node " + testScript, testDir, {
             stdout: onOut,
             stderr: onErr
         }, function(code, outs, errs) {
+            outTest = outTest.split('\n').filter(Boolean);
+            errTest = errTest.split('\n').filter(Boolean);
             checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "2\n");
+            assert.strictEqual(outs[1], "2");
             checkDefaultOutput(code, outTest, errTest);
             done();
         });

@@ -27,8 +27,8 @@ describe("Loader", function() {
             assert.notOk(pkg);
         }
     });
-    
-    it.skip("Loading from package.json file",function(){
-        throw new Error("Not implemented yet");        
-    })
+
+    it.skip("Loading from package.json file", function() {
+        throw new Error("Not implemented yet");
+    });
 });
