@@ -9,7 +9,7 @@ var testScript = "example.js";
 
 
 
-describe("Loader", function() {
+describe("Runner", function() {
     function checkDefaultOutput(code, outs, errs) {
         assert.ok(outs);
         assert.ok(errs);
@@ -61,8 +61,9 @@ describe("Loader", function() {
         run(testScript, testDir, {}, function(code, outs, errs) {
             assert.notEqual(code, 0);
             assert.lengthOf(outs, 0);
-            assert.lengthOf(errs, 1);
+            assert.isAtLeast(errs.length, 1)
             done();
+            
         });
     });
     it("stout and stderr hooks", function(done) {
