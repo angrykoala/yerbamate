@@ -1,7 +1,12 @@
 Yerbamate
 =========
 _by @angrykoala_
-The js testing library for command-line interfaces.
+
+[![Build Status](https://travis-ci.org/angrykoala/yerbamate.svg?branch=master)](https://travis-ci.org/angrykoala/yerbamate)
+[![codecov](https://codecov.io/gh/angrykoala/yerbamate/branch/master/graph/badge.svg)](https://codecov.io/gh/angrykoala/yerbamate)
+
+
+> The js testing library for command-line interfaces.
 
 Sometimes, you want to add automated tests for your node-based CLI. With _yerbamate_ now you can simply test your bins directly within your favorite testing framework like _mocha_  without the mess of creating complex _gulp_ pipelines or adding extra scripts. Just with old good Javascript.
 
