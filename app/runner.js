@@ -21,14 +21,12 @@ module.exports = function(command, dir, options, done) {
         });
 
         proc.on('close', function(code) {
-            if (typeof done === 'function') {
-                done(code, outs, errs);
+            done(code, outs, errs);
+    
+            if (code === 0) {
+                resolve(outs);
             } else {
-                if (code === 0) {
-                    resolve(outs);
-                } else {
-                    reject(errs);
-                }
+                reject(errs);
             }
         });
     });
