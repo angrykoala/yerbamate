@@ -2,6 +2,7 @@ Yerbamate
 =========
 _by @angrykoala_
 
+[![npm version](https://badge.fury.io/js/yerbamate.svg)](https://badge.fury.io/js/yerbamate)
 [![Build Status](https://travis-ci.org/angrykoala/yerbamate.svg?branch=master)](https://travis-ci.org/angrykoala/yerbamate)
 [![codecov](https://codecov.io/gh/angrykoala/yerbamate/branch/master/graph/badge.svg)](https://codecov.io/gh/angrykoala/yerbamate)
 
@@ -15,6 +16,8 @@ Sometimes, you want to add automated tests for your node-based CLI. With _yerbam
 With _yerbamate_ you can easily test commands from your favorite Javascript testing framework.
 
 ```js
+var yerbamate=require('yerbamate');
+
 yerbamate.run("cat my_file.md",null,{},function(code,out,errs){
     if(yerbamate.isErrorCode(code)) console.log("Error: "+errs[0]);
     else console.log("Success - "+out);    

@@ -24,8 +24,4 @@ describe("Yerbamate index", function() {
         assert.strictEqual(yerbamate.successCode(true),false);
         assert.strictEqual(yerbamate.successCode(2),false);
     });
-    it.skip("Cli test",function(){
-        
-        
-    });
 });

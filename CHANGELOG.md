@@ -1,7 +1,9 @@
 0.1.0 / 0000-00-00
 ==================
 
-  * Promise interface for run method
+  * Badges added to Readme
+  * Added CI
+  * Unit tests added
 
 0.0.2 / 2016-10-23
 ==================
