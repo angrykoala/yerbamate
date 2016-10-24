@@ -5,6 +5,18 @@ function filterOutput(out) {
 }
 
 module.exports = function(command, dir, options, done) {
+    if (!done && typeof options === 'function') {
+        done = options;
+        options = {};
+    }
+    if(!done && !options && typeof dir ==='function'){
+        done=dir;
+        dir=null;
+        options={};        
+    }
+    if (!options) options = {};
+
+
     var execOptions = {};
     if (dir) execOptions.cwd = dir;
     if (options.args) command = command + " " + options.args;

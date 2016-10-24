@@ -1,6 +1,6 @@
 var assert = require('chai').assert;
 
-module.exports={
+module.exports = {
     checkDefaultOutput: function(code, outs, errs) {
         assert.ok(outs);
         assert.ok(errs);
@@ -10,5 +10,5 @@ module.exports={
         assert.strictEqual(outs[0], "Example js running");
         assert.strictEqual(errs[0], "Warning example");
     },
-    testScript: "example.js"    
+    testScript: "example.js"
 };

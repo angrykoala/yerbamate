@@ -29,7 +29,6 @@ describe("Loader", function() {
     });
 
     it("Loading from package.json file", function() {
-        assert.ok(loader);
         var pkg = loader(path.join(__dirname, "../package.json"));
         assert.ok(pkg);
         assert.strictEqual(pkg.dir, path.join(__dirname, '..'));
@@ -39,5 +38,18 @@ describe("Loader", function() {
         assert.isUndefined(pkg.start);
         assert.ok(pkg.bin);
         assert.lengthOf(Object.keys(pkg.bin), 0);
+    });
+
+    it("Invalid path", function() {
+        assert.throws(loader);
+        var pkg;
+        try {
+            pkg = loader("falsePath");
+        } catch (e) {
+            assert.ok(e);
+            assert.notOk(pkg);
+        }
+
+
     });
 });

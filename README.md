@@ -22,7 +22,7 @@ With _yerbamate_ you can easily test commands from your favorite Javascript test
 ```js
 var yerbamate=require('yerbamate');
 
-yerbamate.run("cat my_file.md",null,{},function(code,out,errs){
+yerbamate.run("cat my_file.md",function(code,out,errs){
     if(yerbamate.isErrorCode(code)) console.log("Error: "+errs[0]);
     else console.log("Success - "+out);    
 });
@@ -36,7 +36,7 @@ var yerbamate=require('yerbamate');
 var pkg=yerbamate.loadPackage(module);
 
 //Test the package.json start script
-yerbamate.run(pkg.start, pkg.dir, {}, function(code,out,errs){
+yerbamate.run(pkg.start, pkg.dir,{args: "[my arguments]"} function(code,out,errs){
     if(!yerbamate.successCode(code)) console.log("Process exited with error code");
     if(errs.length>0) console.log("Errors in process:"+errs.length);
     console.log("Output: "+out[0]);

@@ -4,7 +4,7 @@ Loads all the scripts and binaries data from a module package.json
 */
 
 var path = require('path');
-var fs=require('fs');
+var fs = require('fs');
 
 
 function getContents(content, dir) {
@@ -34,25 +34,25 @@ function moduleLoader(pmodule, dir) {
         contents = require(dir + '/package.json');
     } catch (error) {}
 
-    if (contents) return getContents(contents,dir);
+    if (contents) return getContents(contents, dir);
 
     else return moduleLoader(pmodule, path.dirname(dir));
 }
 
 
 function fileLoader(filepath) {
-    filepath=path.resolve(filepath);
+    filepath = path.resolve(filepath);
     var contents;
     try {
-        contents = fs.readFileSync(filepath,'utf-8');
+        contents = fs.readFileSync(filepath, 'utf-8');
     } catch (error) {
         throw error;
     }
-    return getContents(JSON.parse(contents),path.dirname(filepath));
+    return getContents(JSON.parse(contents), path.dirname(filepath));
 }
 
 module.exports = function(pmodule) {
     if (!pmodule) throw new Error("yerbamate loader - Not module found");
-    if( typeof pmodule === "string") return fileLoader(pmodule);
+    if (typeof pmodule === "string") return fileLoader(pmodule);
     else return moduleLoader(pmodule);
 };

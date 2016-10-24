@@ -5,22 +5,22 @@ var run = require('../app/runner.js');
 
 var testDir = path.join(__dirname, "config");
 
-var config=require('./config/config');
+var config = require('./config/config');
 var testScript = config.testScript;
 
 
 describe("Runner", function() {
-    var checkDefaultOutput=config.checkDefaultOutput;
+    var checkDefaultOutput = config.checkDefaultOutput;
 
     it("Execute script", function(done) {
-        run("node " + path.join(testDir, testScript), "", {}, function(code, outs, errs) {
+        run("node " + path.join(testDir, testScript), function(code, outs, errs) {
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "2");
             done();
         });
     });
     it("Different directory", function(done) {
-        run("node " + testScript, testDir, {}, function(code, outs, errs) {
+        run("node " + testScript, testDir, function(code, outs, errs) {
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "2");
             done();
@@ -51,7 +51,7 @@ describe("Runner", function() {
         });
     });
     it("Invalid command", function(done) {
-        run(testScript, testDir, {}, function(code, outs, errs) {
+        run(testScript, testDir, function(code, outs, errs) {
             assert.notEqual(code, 0);
             assert.lengthOf(outs, 0);
             assert.isAtLeast(errs.length, 1);
