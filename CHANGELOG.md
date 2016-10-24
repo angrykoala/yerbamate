@@ -1,6 +1,7 @@
-1.0.0 / 0000-00-00
+1.0.0 / 2016-10-25
 ==================
 
+  * Yerbamate runner will accept optional arguments
   * Accepted file path to load _package.json_
   * Unit tests updated
 
