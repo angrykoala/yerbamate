@@ -4,21 +4,14 @@ var path = require('path');
 var run = require('../app/runner.js');
 
 var testDir = path.join(__dirname, "config");
-var testScript = "example.js";
 
-
+var config=require('./config/config');
+var testScript = config.testScript;
 
 
 describe("Runner", function() {
-    function checkDefaultOutput(code, outs, errs) {
-        assert.ok(outs);
-        assert.ok(errs);
-        assert.strictEqual(code, 0);
-        assert.lengthOf(outs, 2);
-        assert.lengthOf(errs, 1);
-        assert.strictEqual(outs[0], "Example js running");
-        assert.strictEqual(errs[0], "Warning example");
-    }
+    var checkDefaultOutput=config.checkDefaultOutput;
+
     it("Execute script", function(done) {
         run("node " + path.join(testDir, testScript), "", {}, function(code, outs, errs) {
             checkDefaultOutput(code, outs, errs);

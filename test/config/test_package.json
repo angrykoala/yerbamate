@@ -1,0 +1,7 @@
+{
+    "main": "example.js",
+    "scripts":{
+        "start":"node example.js"
+    }
+    
+}

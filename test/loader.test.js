@@ -28,7 +28,16 @@ describe("Loader", function() {
         }
     });
 
-    it.skip("Loading from package.json file", function() {
-        throw new Error("Not implemented yet");
+    it("Loading from package.json file", function() {
+        assert.ok(loader);
+        var pkg = loader(path.join(__dirname, "../package.json"));
+        assert.ok(pkg);
+        assert.strictEqual(pkg.dir, path.join(__dirname, '..'));
+        assert.strictEqual(pkg.main, 'node index.js');
+        assert.ok(pkg.scripts);
+        assert.ok(pkg.scripts.test);
+        assert.isUndefined(pkg.start);
+        assert.ok(pkg.bin);
+        assert.lengthOf(Object.keys(pkg.bin), 0);
     });
 });

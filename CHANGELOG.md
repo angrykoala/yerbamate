@@ -1,3 +1,9 @@
+1.0.0 / 0000-00-00
+==================
+
+  * Accepted file path to load _package.json_
+  * Unit tests updated
+
 0.1.0 / 2016-10-24
 ==================
 

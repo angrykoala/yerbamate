@@ -1,7 +1,7 @@
 {
   "name": "yerbamate",
-  "version": "0.1.0",
-  "description": "A js testing library for command-line interfaces",
+  "version": "1.0.0",
+  "description": "The js testing library for command-line interfaces",
   "main": "index.js",
   "scripts": {
     "test": "istanbul cover _mocha"
