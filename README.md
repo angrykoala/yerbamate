@@ -23,7 +23,7 @@ With _yerbamate_ you can easily test commands from your favorite Javascript test
 var yerbamate=require('yerbamate');
 
 yerbamate.run("cat my_file.md", function(code, out, errs){
-    if(yerbamate.isErrorCode(code)) console.log("Error: " + errs[0]);
+    if(!yerbamate.successCode(code)) console.log("Error: " + errs[0]);
     else console.log("Success - " + out);    
 });
 ```
