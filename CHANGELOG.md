@@ -1,6 +1,14 @@
+1.0.0 / 2016-10-25
+==================
+
+  * Yerbamate runner will accept optional arguments
+  * Accepted file path to load _package.json_
+  * Unit tests updated
+
 0.1.0 / 2016-10-24
 ==================
 
+  * Cleaned stdout and stderr on runner
   * Readme improved
   * Badges added to Readme
   * Added CI
