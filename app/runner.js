@@ -17,16 +17,22 @@ module.exports = function(command, dir, options, done) {
     if (!options) options = {};
 
     var execOptions = {};
-    var args=[];
+    var args = [];
     if (dir) execOptions.cwd = dir;
     if (options.args) {
         if (options.args.constructor === Array) {
             args = options.args;
         } else args = options.args.split(" ");
     }
-    
-    var arr=command.split(" ").concat(args);
-    var proc = process.spawn(arr.shift(),arr ,execOptions);
+
+    var arr = command.split(" ").concat(args);
+    try {
+        var proc = process.spawn(arr.shift(), arr, execOptions);
+    } catch (e) {
+        done(1, [], [e]);
+        return null;
+
+    }
 
     var outs = "";
     var errs = "";
@@ -41,8 +47,8 @@ module.exports = function(command, dir, options, done) {
         if (options.stderr) options.stderr(data.toString());
     });
 
-    proc.on('close', function(code,signal) {
-        if(signal==="SIGTERM" && code===null) code=143;
+    proc.on('close', function(code, signal) {
+        if (signal === "SIGTERM" && code === null) code = 143;
         if (done) done(code, filterOutput(outs), filterOutput(errs));
     });
     return proc;
