@@ -31,7 +31,6 @@ module.exports = function(command, dir, options, done) {
     } catch (e) {
         done(1, [], [e]);
         return null;
-
     }
 
     var outs = "";
@@ -45,6 +44,10 @@ module.exports = function(command, dir, options, done) {
     proc.stderr.on('data', function(data) {
         errs += data;
         if (options.stderr) options.stderr(data.toString());
+    });
+
+    proc.on('error', function (err) {
+        errs+=err;
     });
 
     proc.on('close', function(code, signal) {
