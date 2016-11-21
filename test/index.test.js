@@ -10,6 +10,8 @@ describe("Yerbamate index", function() {
         assert.typeOf(yerbamate.run, 'function');
         assert.ok(yerbamate.loadPackage);
         assert.typeOf(yerbamate.loadPackage, 'function');
+        assert.ok(yerbamate.stop);
+        assert.typeOf(yerbamate.stop, 'function');
     });
     it("successCode()", function() {
         assert.ok(yerbamate.successCode);

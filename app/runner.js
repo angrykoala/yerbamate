@@ -9,17 +9,22 @@ module.exports = function(command, dir, options, done) {
         done = options;
         options = {};
     }
-    if(!done && !options && typeof dir ==='function'){
-        done=dir;
-        dir=null;
-        options={};        
+    if (!done && !options && typeof dir === 'function') {
+        done = dir;
+        dir = null;
+        options = {};
     }
     if (!options) options = {};
 
-
     var execOptions = {};
     if (dir) execOptions.cwd = dir;
-    if (options.args) command = command + " " + options.args;
+    if (options.args) {
+        var args;
+        if (options.args.constructor === Array) {
+            args = options.args.join(" ");
+        } else args = options.args;
+        command = command + " " + args;
+    }
     var proc = process.exec(command, execOptions);
 
     var outs = "";
@@ -35,7 +40,9 @@ module.exports = function(command, dir, options, done) {
         if (options.stderr) options.stderr(data);
     });
 
-    proc.on('close', function(code) {
+    proc.on('close', function(code,signal) {
+        if(signal==="SIGTERM" && code===null) code=143;
         if (done) done(code, filterOutput(outs), filterOutput(errs));
     });
+    return proc;
 };
