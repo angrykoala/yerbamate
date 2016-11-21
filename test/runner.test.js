@@ -53,7 +53,7 @@ describe("Runner", function() {
     });
     it("Invalid command", function(done) {
             run(testScript, testDir, function(code, outs, errs) {
-                assert.strictEqual(code, 1);
+                assert.notEqual(code, 0);
                 assert.lengthOf(outs,0);
                 assert.lengthOf(errs,1);
                 done();
