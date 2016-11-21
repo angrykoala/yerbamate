@@ -7,7 +7,6 @@ var loader = require('./app/loader');
 
 var kill=require('tree-kill');
 
-
 module.exports = {
     run: runner,
     stop: function(proc){

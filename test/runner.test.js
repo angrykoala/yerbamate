@@ -87,7 +87,7 @@ describe("Runner", function() {
     });
 
     it("Stop process", function(done) {
-        var proc = run("node " + path.join(testDir, testScript), function(code, outs, errs) {
+        var proc = run("node", function(code, outs, errs) {
             assert.notEqual(code, 0);
             done();
         });
