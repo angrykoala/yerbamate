@@ -17,27 +17,28 @@ module.exports = function(command, dir, options, done) {
     if (!options) options = {};
 
     var execOptions = {};
+    var args=[];
     if (dir) execOptions.cwd = dir;
     if (options.args) {
-        var args;
         if (options.args.constructor === Array) {
-            args = options.args.join(" ");
-        } else args = options.args;
-        command = command + " " + args;
+            args = options.args;
+        } else args = options.args.split(" ");
     }
-    var proc = process.exec(command, execOptions);
+    
+    var arr=command.split(" ").concat(args);
+    var proc = process.spawn(arr.shift(),arr ,execOptions);
 
     var outs = "";
     var errs = "";
 
     proc.stdout.on('data', function(data) {
         outs += data;
-        if (options.stdout) options.stdout(data);
+        if (options.stdout) options.stdout(data.toString());
     });
 
     proc.stderr.on('data', function(data) {
         errs += data;
-        if (options.stderr) options.stderr(data);
+        if (options.stderr) options.stderr(data.toString());
     });
 
     proc.on('close', function(code,signal) {
