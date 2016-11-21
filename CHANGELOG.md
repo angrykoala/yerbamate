@@ -1,4 +1,4 @@
-1.0.1 / 2016-11-21
+1.1.0 / 2016-11-21
 ==================
 
   * Runner will return the child process
