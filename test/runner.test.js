@@ -2,6 +2,7 @@ var assert = require('chai').assert;
 var path = require('path');
 
 var run = require('../app/runner.js');
+var stop = require('../index').stop;
 
 var testDir = path.join(__dirname, "config");
 
@@ -59,6 +60,7 @@ describe("Runner", function() {
 
         });
     });
+
     it("Stout and stderr hooks", function(done) {
         var outTest = "";
         var errTest = "";
@@ -78,6 +80,26 @@ describe("Runner", function() {
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "2");
             checkDefaultOutput(code, outTest, errTest);
+            done();
+        });
+    });
+    
+    it("Stop process", function(done){
+        var proc=run("node " + path.join(testDir, testScript), function(code, outs, errs) {
+            assert.notEqual(code, 0);            
+            done();
+        });
+        assert.ok(proc);
+        stop(proc);
+        
+    });
+    
+    it("Array arguments", function(done){
+        run("node " + testScript, testDir, {
+            args: ["myargument1","myargument2"]
+        }, function(code, outs, errs) {
+            checkDefaultOutput(code, outs, errs);
+            assert.strictEqual(outs[1], "4");
             done();
         });
     });

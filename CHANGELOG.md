@@ -1,3 +1,10 @@
+1.1.0 / 2016-11-21
+==================
+
+  * Runner will return the child process
+  * Added method stop to kill a child process
+  * Arrays accepted as arguments
+
 1.0.0 / 2016-10-25
 ==================
 

@@ -8,6 +8,9 @@ var loader = require('./app/loader');
 
 module.exports = {
     run: runner,
+    stop: function(proc){
+        proc.kill();
+    },
     loadPackage: loader,
     successCode: function(code) {
         return code === 0;
