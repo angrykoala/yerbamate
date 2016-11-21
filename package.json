@@ -1,6 +1,6 @@
 {
   "name": "yerbamate",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "The js testing library for command-line interfaces",
   "main": "index.js",
   "scripts": {
@@ -31,5 +31,8 @@
   },
   "engines": {
     "node": ">= 0.12.15"
+  },
+  "dependencies": {
+    "tree-kill": "^1.1.0"
   }
 }

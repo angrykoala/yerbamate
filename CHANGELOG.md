@@ -1,3 +1,10 @@
+1.1.1 / 2016-11-21
+==================
+
+  * Added tree-kill for task stop
+  * Changed child spawn from exec to spawn
+  * Added error listener to child processes
+
 1.1.0 / 2016-11-21
 ==================
 

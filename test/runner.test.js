@@ -52,22 +52,24 @@ describe("Runner", function() {
         });
     });
     it("Invalid command", function(done) {
-        run(testScript, testDir, function(code, outs, errs) {
-            assert.notEqual(code, 0);
-            assert.lengthOf(outs, 0);
-            assert.isAtLeast(errs.length, 1);
-            done();
+            run(testScript, testDir, function(code, outs, errs) {
+                assert.notEqual(code, 0);
+                assert.lengthOf(outs,0);
+                assert.lengthOf(errs,1);
+                done();
+            });
 
-        });
     });
 
     it("Stout and stderr hooks", function(done) {
         var outTest = "";
         var errTest = "";
         var onOut = function(data) {
+            assert.typeOf(data,"string");
             outTest += data;
         };
         var onErr = function(data) {
+            assert.typeOf(data,"string");
             errTest += data;
         };
 
@@ -83,20 +85,20 @@ describe("Runner", function() {
             done();
         });
     });
-    
-    it("Stop process", function(done){
-        var proc=run("node " + path.join(testDir, testScript), function(code, outs, errs) {
-            assert.notEqual(code, 0);            
+
+    it("Stop process", function(done) {
+        var proc = run("node " + path.join(testDir, testScript), function(code, outs, errs) {
+            assert.notEqual(code, 0);
             done();
         });
         assert.ok(proc);
         stop(proc);
-        
+
     });
-    
-    it("Array arguments", function(done){
+
+    it("Array arguments", function(done) {
         run("node " + testScript, testDir, {
-            args: ["myargument1","myargument2"]
+            args: ["myargument1", "myargument2"]
         }, function(code, outs, errs) {
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "4");

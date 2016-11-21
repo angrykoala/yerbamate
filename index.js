@@ -5,11 +5,13 @@
 var runner = require('./app/runner');
 var loader = require('./app/loader');
 
+var kill=require('tree-kill');
+
 
 module.exports = {
     run: runner,
     stop: function(proc){
-        proc.kill();
+        kill(proc.pid);
     },
     loadPackage: loader,
     successCode: function(code) {
