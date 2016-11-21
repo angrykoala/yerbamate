@@ -26,8 +26,9 @@ module.exports = function(command, dir, options, done) {
     }
 
     var arr = command.split(" ").concat(args);
+    var proc;
     try {
-        var proc = process.spawn(arr.shift(), arr, execOptions);
+        proc = process.spawn(arr.shift(), arr, execOptions);
     } catch (e) {
         done(1, [], [e]);
         return null;
