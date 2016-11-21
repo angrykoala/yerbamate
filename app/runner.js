@@ -16,7 +16,9 @@ module.exports = function(command, dir, options, done) {
     }
     if (!options) options = {};
 
-    var execOptions = {};
+    var execOptions = {
+        shell: true
+    };
     var args = [];
     if (dir) execOptions.cwd = dir;
     if (options.args) {
@@ -47,8 +49,8 @@ module.exports = function(command, dir, options, done) {
         if (options.stderr) options.stderr(data.toString());
     });
 
-    proc.on('error', function (err) {
-        errs+=err;
+    proc.on('error', function(err) {
+        errs += err;
     });
 
     proc.on('close', function(code, signal) {
