@@ -2,6 +2,7 @@
 ==================
 
   * Readme and description updated
+  * Test coverage improved
 
 1.1.2 / 2016-11-21
 ==================

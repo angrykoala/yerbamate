@@ -52,12 +52,12 @@ describe("Runner", function() {
         });
     });
     it("Invalid command", function(done) {
-            run(testScript, testDir, function(code, outs, errs) {
-                assert.notEqual(code, 0);
-                assert.lengthOf(outs,0);
-                assert.lengthOf(errs,1);
-                done();
-            });
+        run(testScript, testDir, function(code, outs, errs) {
+            assert.notEqual(code, 0);
+            assert.lengthOf(outs, 0);
+            assert.lengthOf(errs, 1);
+            done();
+        });
 
     });
 
@@ -65,11 +65,11 @@ describe("Runner", function() {
         var outTest = "";
         var errTest = "";
         var onOut = function(data) {
-            assert.typeOf(data,"string");
+            assert.typeOf(data, "string");
             outTest += data;
         };
         var onErr = function(data) {
-            assert.typeOf(data,"string");
+            assert.typeOf(data, "string");
             errTest += data;
         };
 
@@ -102,6 +102,14 @@ describe("Runner", function() {
         }, function(code, outs, errs) {
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "4");
+            done();
+        });
+    });
+
+    it("Execute script with undefined options and arguments", function(done) {
+        run("node " + path.join(testDir, testScript), undefined, undefined, function(code, outs, errs) {
+            checkDefaultOutput(code, outs, errs);
+            assert.strictEqual(outs[1], "2");
             done();
         });
     });
