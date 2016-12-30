@@ -7,9 +7,9 @@ _by @angrykoala_
 [![codecov](https://codecov.io/gh/angrykoala/yerbamate/branch/master/graph/badge.svg)](https://codecov.io/gh/angrykoala/yerbamate)
 
 
-> The js testing library for command-line interfaces.
+> The js task-runner library for command-line interfaces testing.
 
-Sometimes, you want to add automated tests for your node-based CLI. With _Yerbamate_ now you can simply test your programs directly within your favorite testing framework like _mocha_ without the mess of creating complex gulp pipelines or adding extra bash scripts. Just with old good Javascript.
+Sometimes, you want to add automated tests for your node-based CLI. With _Yerbamate_ now you can test your programs directly within your favorite testing framework like _mocha_ without the mess of creating complex gulp pipelines or adding extra bash scripts. Just with ol' good Javascript.
 
 Yerbamate consists in a **Runner** for asyncronous execution of commands and a **Loader** to easily import the information of your _package.json_ without hard-coding paths and variables in your tests. 
 
@@ -43,7 +43,6 @@ yerbamate.run(pkg.start, pkg.dir, {args: "[my arguments]"} function(code, out, e
 });
 ```
 
-
 ## Documentation
 
 * `loadPackage(module)` Will load your package.json module data, the returned object will contain the path to the `package.json` file, `main` and `start` script as well as `bin` and `scripts` objects from package.json.
@@ -52,12 +51,12 @@ yerbamate.run(pkg.start, pkg.dir, {args: "[my arguments]"} function(code, out, e
   
   * The callback parameters arrays stdout and stderr will return a different element per line break. Empty line-breaks will be ignored.
  
-* `stop(process)` Will kill the given process.
+* `stop(process)` Will kill the given process, sending a `SIGTERM` signal.
 
 * `successCode(code)` Will return true if the given process code is 0, false otherwise.
 
 ## Contributors
-If you want to contribute to yerbamate please:   
+If you want to contribute to yerbamate please:
 
 1. Read [CONTRIBUTING.md](CONTRIBUTING.md).
 2. Fork from [dev branch](https://github.com/angrykoala/yerbamate/tree/dev).
@@ -69,4 +68,4 @@ Thanks for your help!
 ## Acknowledgments
 * [pkginfo](https://github.com/indexzero/node-pkginfo) as inspiration for yerbamate loader.
 
->Yerbamate is developed under GNU GPL-3 license by @angrykoala 
+>Yerbamate is developed under GNU GPL-3 license by @angrykoala.

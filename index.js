@@ -10,7 +10,7 @@ var kill=require('tree-kill');
 module.exports = {
     run: runner,
     stop: function(proc){
-        kill(proc.pid);
+        kill(proc.pid); //This sends SIGTERM
     },
     loadPackage: loader,
     successCode: function(code) {
