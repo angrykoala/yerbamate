@@ -93,7 +93,15 @@ describe("Runner", function() {
         });
         assert.ok(proc);
         stop(proc);
+    });
 
+    it("Stop process callback", function(done) {
+        var proc = run("node", function(code, outs, errs) {});
+        assert.ok(proc);
+        stop(proc, function(err) {
+            assert.notOk(err);
+            done();
+        });
     });
 
     it("Array arguments", function(done) {
