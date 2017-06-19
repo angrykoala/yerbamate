@@ -1,3 +1,9 @@
+1.1.5 / 2017-06-19
+==================
+
+  * Added npm lock file
+  * Chai dependency updated
+
 1.1.4 / 2017-03-27
 ==================
 
@@ -46,7 +52,7 @@
 
 0.0.2 / 2016-10-23
 ==================
-  
+
   * Args option bug fixed
   * Changelog added
 
