@@ -1,8 +1,10 @@
 var process = require('child_process');
+var path = require('path');
 
 function filterOutput(out) {
     return out.split('\n').filter(Boolean);
 }
+
 
 module.exports = function(command, dir, options, done) {
     if (!done && typeof options === 'function') {
@@ -20,7 +22,10 @@ module.exports = function(command, dir, options, done) {
         shell: true
     };
     var args = [];
-    if (dir) execOptions.cwd = dir;
+    if (dir) {
+        dir = path.resolve(dir);
+        execOptions.cwd = dir;
+    }
     if (options.args) {
         if (options.args.constructor === Array) {
             args = options.args;
