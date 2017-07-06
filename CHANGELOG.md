@@ -1,7 +1,7 @@
 1.1.6 / 2017-07-07
 ==================
 
-  * Execution path is now resolved, paths like (`~`) are now supported
+  * Execution path is now resolved before being used
 
 1.1.5 / 2017-06-19
 ==================
