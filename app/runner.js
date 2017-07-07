@@ -1,8 +1,17 @@
 var process = require('child_process');
+var untildify = require('untildify');
+
+
 var path = require('path');
+var os = require('os');
 
 function filterOutput(out) {
     return out.split('\n').filter(Boolean);
+}
+
+function processPath(dir) {
+    dir = untildify(dir).trim();
+    return path.resolve(dir);
 }
 
 
@@ -22,10 +31,8 @@ module.exports = function(command, dir, options, done) {
         shell: true
     };
     var args = [];
-    if (dir) {
-        dir = path.resolve(dir);
-        execOptions.cwd = dir;
-    }
+    if (dir) execOptions.cwd = processPath(dir);
+
     if (options.args) {
         if (options.args.constructor === Array) {
             args = options.args;
