@@ -1,3 +1,4 @@
+"use strict";
 console.log("Example js running");
 console.error("Warning example");
 console.log(process.argv.length);

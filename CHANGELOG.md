@@ -1,3 +1,14 @@
+2.0.0 / 2017-07-08
+==================
+
+  * Option env supported to define environment variables
+  * Execution path tilde (~) expansion to home directory
+  * Parameter dir can now be omitted and still add an options parameter
+  * Code updated to ES6
+  * Dropped support for node<=4
+  * Added jshint to project
+  * Execution path is now resolved before being used
+
 1.1.5 / 2017-06-19
 ==================
 

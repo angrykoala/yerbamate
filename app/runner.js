@@ -1,61 +1,84 @@
-var process = require('child_process');
+"use strict";
+
+const path = require('path');
+const childProcess = require('child_process');
+const untildify = require('untildify');
 
 function filterOutput(out) {
     return out.split('\n').filter(Boolean);
 }
 
-module.exports = function(command, dir, options, done) {
-    if (!done && typeof options === 'function') {
-        done = options;
-        options = {};
-    }
-    if (!done && !options && typeof dir === 'function') {
-        done = dir;
-        dir = null;
-        options = {};
-    }
-    if (!options) options = {};
+function processPath(dir) {
+    dir = untildify(dir).trim();
+    return path.resolve(dir);
+}
 
-    var execOptions = {
+function runProcess(command, dir, options, done) {
+    const execOptions = {
         shell: true
     };
-    var args = [];
-    if (dir) execOptions.cwd = dir;
+    let args = [];
+    if (dir) execOptions.cwd = processPath(dir);
+
     if (options.args) {
         if (options.args.constructor === Array) {
             args = options.args;
         } else args = options.args.split(" ");
     }
 
-    var arr = command.split(" ").concat(args);
-    var proc;
+    if (options.env) {
+        execOptions.env = Object.assign(options.env, process.env);
+    }
+
+    const arr = command.split(" ").concat(args);
+    let proc;
     try {
-        proc = process.spawn(arr.shift(), arr, execOptions);
+        proc = childProcess.spawn(arr.shift(), arr, execOptions);
     } catch (e) {
         done(1, [], [e]);
         return null;
     }
 
-    var outs = "";
-    var errs = "";
+    let outs = "";
+    let errs = "";
 
-    proc.stdout.on('data', function(data) {
+    proc.stdout.on('data', (data) => {
         outs += data;
         if (options.stdout) options.stdout(data.toString());
     });
 
-    proc.stderr.on('data', function(data) {
+    proc.stderr.on('data', (data) => {
         errs += data;
         if (options.stderr) options.stderr(data.toString());
     });
 
-    proc.on('error', function(err) {
+    proc.on('error', (err) => {
         errs += err;
     });
 
-    proc.on('close', function(code, signal) {
+    proc.on('close', (code, signal) => {
         if (signal === "SIGTERM" && code === null) code = 143;
         if (done) done(code, filterOutput(outs), filterOutput(errs));
     });
     return proc;
+}
+
+
+module.exports = function(command, dir, options, done) {
+    if (!done && typeof options === 'function') {
+        done = options;
+        options = null;
+    }
+    if (!done && !options && typeof dir === 'function') {
+        done = dir;
+        dir = null;
+        options = null;
+    }
+    if (!options && typeof dir === 'object') {
+        options = dir;
+        dir = null;
+    }
+    if (!options) options = {};
+
+    return runProcess(command, dir, options, done);
 };

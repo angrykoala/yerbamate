@@ -1,17 +1,19 @@
-var assert = require('chai').assert;
-var path = require('path');
+"use strict";
 
-var run = require('../app/runner.js');
-var stop = require('../index').stop;
+const assert = require('chai').assert;
+const path = require('path');
 
-var testDir = path.join(__dirname, "config");
+const run = require('../app/runner.js');
+const stop = require('../index').stop;
 
-var config = require('./config/config');
-var testScript = config.testScript;
+const testDir = path.join(__dirname, "config");
+
+const config = require('./config/config');
+const testScript = config.testScript;
 
 
 describe("Runner", function() {
-    var checkDefaultOutput = config.checkDefaultOutput;
+    const checkDefaultOutput = config.checkDefaultOutput;
 
     it("Execute script", function(done) {
         run("node " + path.join(testDir, testScript), function(code, outs, errs) {
@@ -62,13 +64,13 @@ describe("Runner", function() {
     });
 
     it("Stout and stderr hooks", function(done) {
-        var outTest = "";
-        var errTest = "";
-        var onOut = function(data) {
+        let outTest = "";
+        let errTest = "";
+        const onOut = function(data) {
             assert.typeOf(data, "string");
             outTest += data;
         };
-        var onErr = function(data) {
+        const onErr = function(data) {
             assert.typeOf(data, "string");
             errTest += data;
         };
@@ -87,7 +89,7 @@ describe("Runner", function() {
     });
 
     it("Stop process", function(done) {
-        var proc = run("node", function(code, outs, errs) {
+        const proc = run("node", function(code) {
             assert.notEqual(code, 0);
             done();
         });
@@ -96,7 +98,7 @@ describe("Runner", function() {
     });
 
     it("Stop process callback", function(done) {
-        var proc = run("node", function(code, outs, errs) {});
+        const proc = run("node", function() {});
         assert.ok(proc);
         stop(proc, function(err) {
             assert.notOk(err);
@@ -118,6 +120,44 @@ describe("Runner", function() {
         run("node " + path.join(testDir, testScript), undefined, undefined, function(code, outs, errs) {
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "2");
+            done();
+        });
+    });
+
+    it("Execute envs defined in command", function(done) {
+        run("testenv=dontpanic node print_env.js", testDir, function(code, outs, errs) {
+            assert.ok(outs);
+            assert.ok(errs);
+            assert.strictEqual(code, 0);
+            assert.lengthOf(outs, 1);
+            assert.lengthOf(errs, 0);
+            assert.strictEqual(outs[0], "dontpanic");
+            done();
+        });
+    });
+
+    it("Execute envs defined in options", function(done) {
+        run("node print_env.js", testDir, {
+            env: {
+                testenv: "dontpanic"
+            }
+        }, function(code, outs, errs) {
+            assert.ok(outs);
+            assert.ok(errs);
+            assert.strictEqual(code, 0);
+            assert.lengthOf(outs, 1);
+            assert.lengthOf(errs, 0);
+            assert.strictEqual(outs[0], "dontpanic");
+            done();
+        });
+    });
+
+    it("Execute script without dir argument and options", function(done) {
+        run("node " + path.join(testDir, testScript), {
+            args: ["myargument1", "myargument2"]
+        }, function(code, outs, errs) {
+            checkDefaultOutput(code, outs, errs);
+            assert.strictEqual(outs[1], "4");
             done();
         });
     });

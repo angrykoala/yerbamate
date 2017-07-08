@@ -1,10 +1,11 @@
+"use strict";
 /*
 Loads all the scripts and binaries data from a module package.json
 >Based on [pkginfo](https://github.com/indexzero/node-pkginfo)
 */
 
-var path = require('path');
-var fs = require('fs');
+const path = require('path');
+const fs = require('fs');
 
 
 function getContents(content, dir) {
@@ -18,18 +19,10 @@ function getContents(content, dir) {
 }
 
 function moduleLoader(pmodule, dir) {
-    if (!dir) {
-        dir = path.dirname(pmodule.filename || pmodule.id);
-    }
+    dir = processDir(pmodule, dir);
+    validateDir(pmodule, dir);
 
-    if (dir === '/') {
-        throw new Error('Could not find package.json up from ' +
-            (pmodule.filename || pmodule.id));
-    } else if (!dir || dir === '.') {
-        throw new Error('Cannot find package.json from unspecified directory');
-    }
-
-    var contents;
+    let contents;
     try {
         contents = require(dir + '/package.json');
     } catch (error) {}
@@ -39,10 +32,27 @@ function moduleLoader(pmodule, dir) {
     else return moduleLoader(pmodule, path.dirname(dir));
 }
 
+function processDir(pmodule, dir) {
+    if (!dir) {
+        dir = path.dirname(pmodule.filename || pmodule.id);
+    }
+
+
+    return dir;
+}
+
+function validateDir(pmodule, dir) {
+    if (dir === '/') {
+        throw new Error('Could not find package.json up from ' + (pmodule.filename || pmodule.id));
+    } else if (!dir || dir === '.') {
+        throw new Error('Cannot find package.json from unspecified directory');
+    }
+}
+
 
 function fileLoader(filepath) {
     filepath = path.resolve(filepath);
-    var contents;
+    let contents;
     try {
         contents = fs.readFileSync(filepath, 'utf-8');
     } catch (error) {

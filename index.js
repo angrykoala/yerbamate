@@ -1,19 +1,21 @@
+"use strict";
+
 // Yerbamate
 // by @angrykoala
 // The js testing library for command-line interfaces.
 
-var runner = require('./app/runner');
-var loader = require('./app/loader');
+const runner = require('./app/runner');
+const loader = require('./app/loader');
 
-var kill = require('tree-kill');
+const kill = require('tree-kill');
 
 module.exports = {
     run: runner,
-    stop: function(proc, cb) {
-        kill(proc.pid,'SIGKILL', cb); //This sends SIGTERM
+    stop: (proc, cb) => {
+        kill(proc.pid, 'SIGKILL', cb); //This sends SIGTERM
     },
     loadPackage: loader,
-    successCode: function(code) {
+    successCode: (code) => {
         return code === 0;
     }
 };

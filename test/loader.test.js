@@ -1,12 +1,14 @@
-var assert = require('chai').assert;
-var path = require('path');
+"use strict";
 
-var loader = require('../app/loader');
+const assert = require('chai').assert;
+const path = require('path');
+
+const loader = require('../app/loader');
 
 describe("Loader", function() {
     it("Check module content", function() {
         assert.ok(loader);
-        var pkg = loader(module);
+        const pkg = loader(module);
         assert.ok(pkg);
         assert.strictEqual(pkg.dir, path.join(__dirname, '..'));
         assert.strictEqual(pkg.main, 'node index.js');
@@ -18,7 +20,7 @@ describe("Loader", function() {
     });
 
     it("Invalid module", function() {
-        var pkg;
+        let pkg;
         assert.throws(loader);
         try {
             pkg = loader();
@@ -29,7 +31,7 @@ describe("Loader", function() {
     });
 
     it("Loading from package.json file", function() {
-        var pkg = loader(path.join(__dirname, "../package.json"));
+        const pkg = loader(path.join(__dirname, "../package.json"));
         assert.ok(pkg);
         assert.strictEqual(pkg.dir, path.join(__dirname, '..'));
         assert.strictEqual(pkg.main, 'node index.js');
@@ -42,7 +44,7 @@ describe("Loader", function() {
 
     it("Invalid path", function() {
         assert.throws(loader);
-        var pkg;
+        let pkg;
         try {
             pkg = loader("falsePath");
         } catch (e) {
@@ -53,10 +55,10 @@ describe("Loader", function() {
 
     it("Invalid module", function() {
         assert.throws(loader);
-        var testModule = {
+        const testModule = {
             filename: "falsePath"
-        }
-        var pkg;
+        };
+        let pkg;
         try {
             pkg = loader(testModule);
         } catch (e) {
@@ -66,10 +68,10 @@ describe("Loader", function() {
     });
 
     it("Module with id", function() {
-        var testModule = {
+        const testModule = {
             id: path.join(__dirname, "./config/test_package.json")
-        }
-        var pkg;
+        };
+        let pkg;
         pkg = loader(testModule);
         assert.ok(pkg);
         assert.ok(pkg.scripts);
@@ -77,8 +79,8 @@ describe("Loader", function() {
     });
 
     it("Empty package.json", function() {
-        var pkg;
-        var p = path.join(__dirname, "./config/empty_package.json");
+        let pkg;
+        const p = path.join(__dirname, "./config/empty_package.json");
         pkg = loader(p);
         assert.ok(pkg);
         assert.ok(pkg.dir);
