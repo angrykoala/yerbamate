@@ -32,8 +32,7 @@ module.exports = function(command, dir, options, done) {
     if (!options) options = {};
 
     var execOptions = {
-        shell: true,
-        env: {}
+        shell: true
     };
     var args = [];
     if (dir) execOptions.cwd = processPath(dir);
