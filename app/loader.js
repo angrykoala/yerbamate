@@ -1,10 +1,11 @@
+"use strict";
 /*
 Loads all the scripts and binaries data from a module package.json
 >Based on [pkginfo](https://github.com/indexzero/node-pkginfo)
 */
 
-var path = require('path');
-var fs = require('fs');
+const path = require('path');
+const fs = require('fs');
 
 
 function getContents(content, dir) {
@@ -29,7 +30,7 @@ function moduleLoader(pmodule, dir) {
         throw new Error('Cannot find package.json from unspecified directory');
     }
 
-    var contents;
+    let contents;
     try {
         contents = require(dir + '/package.json');
     } catch (error) {}
@@ -42,7 +43,7 @@ function moduleLoader(pmodule, dir) {
 
 function fileLoader(filepath) {
     filepath = path.resolve(filepath);
-    var contents;
+    let contents;
     try {
         contents = fs.readFileSync(filepath, 'utf-8');
     } catch (error) {

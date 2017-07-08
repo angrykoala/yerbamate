@@ -3,5 +3,4 @@
     "scripts": {
         "start": "node example.js"
     }
-
 }

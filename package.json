@@ -4,7 +4,8 @@
   "description": "Test oriented task runner library",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover _mocha"
+    "test": "istanbul cover _mocha",
+    "jshint": "jshint *.js app/*.js test/*.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "chai": "^4.0.2",
     "istanbul": "^0.4.5",
+    "jshint": "^2.9.5",
     "mocha": "^3.1.2"
   },
   "engines": {

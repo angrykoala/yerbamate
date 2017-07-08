@@ -1,4 +1,5 @@
-var assert = require('chai').assert;
+"use strict";
+const assert = require('chai').assert;
 
 module.exports = {
     checkDefaultOutput: function(code, outs, errs) {

@@ -1,7 +1,9 @@
-var assert = require('chai').assert;
+"use strict";
 
-var yerbamate = require('../index');
-var config = require('./config/config');
+const assert = require('chai').assert;
+
+const yerbamate = require('../index');
+const config = require('./config/config');
 
 describe("Yerbamate index", function() {
     it("Main Functions", function() {
@@ -26,7 +28,7 @@ describe("Yerbamate index", function() {
         assert.strictEqual(yerbamate.successCode(2), false);
     });
     it("Running from package.json", function(done) {
-        var pkg = yerbamate.loadPackage(__dirname + '/config/test_package.json');
+        const pkg = yerbamate.loadPackage(__dirname + '/config/test_package.json');
         assert.ok(pkg);
         yerbamate.run(pkg.start, pkg.dir, {}, function(code, outs, errs) {
             config.checkDefaultOutput(code, outs, errs);
