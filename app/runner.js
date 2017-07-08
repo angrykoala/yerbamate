@@ -1,4 +1,4 @@
-var process = require('child_process');
+var child_process = require('child_process');
 var untildify = require('untildify');
 
 
@@ -44,13 +44,13 @@ module.exports = function(command, dir, options, done) {
     }
 
     if (options.env) {
-        execOptions.env = Object.assign({}, process.env, options.env);
+        execOptions.env = Object.assign(options.env, process.env);
     }
 
     var arr = command.split(" ").concat(args);
     var proc;
     try {
-        proc = process.spawn(arr.shift(), arr, execOptions);
+        proc = child_process.spawn(arr.shift(), arr, execOptions);
     } catch (e) {
         done(1, [], [e]);
         return null;

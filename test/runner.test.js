@@ -140,8 +140,6 @@ describe("Runner", function() {
                 testenv: "dontpanic"
             }
         }, function(code, outs, errs) {
-            console.log(outs);
-            console.log(errs);
             assert.ok(outs);
             assert.ok(errs);
             assert.strictEqual(code, 0);
