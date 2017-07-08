@@ -1,6 +1,7 @@
 1.1.6 / ####-##-##
 ==================
 
+  * Option `env` supported to defined environment variables
   * Execution path tilde (~) expansion to homedir
   * Execution path is now resolved before being used
 

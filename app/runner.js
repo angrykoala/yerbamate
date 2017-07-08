@@ -28,7 +28,8 @@ module.exports = function(command, dir, options, done) {
     if (!options) options = {};
 
     var execOptions = {
-        shell: true
+        shell: true,
+        env: {}
     };
     var args = [];
     if (dir) execOptions.cwd = processPath(dir);
@@ -37,6 +38,10 @@ module.exports = function(command, dir, options, done) {
         if (options.args.constructor === Array) {
             args = options.args;
         } else args = options.args.split(" ");
+    }
+
+    if (options.env) {
+        execOptions.env = options.env;
     }
 
     var arr = command.split(" ").concat(args);

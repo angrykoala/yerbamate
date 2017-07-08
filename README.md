@@ -11,7 +11,7 @@ _by @angrykoala_
 
 Sometimes, you want to add automated tests for your node-based CLI. With _Yerbamate_ now you can test your programs directly within your favorite testing framework like _mocha_ without the mess of creating complex gulp pipelines or adding extra bash scripts. Just with ol' good Javascript.
 
-Yerbamate consists in a **Runner** for asyncronous execution of commands and a **Loader** to easily import the information of your _package.json_ without hard-coding paths and variables in your tests. 
+Yerbamate consists in a **Runner** for asyncronous execution of commands and a **Loader** to easily import the information of your _package.json_ without hard-coding paths and variables in your tests.
 
 ## Installation
 To install yerbamate, simply execute `npm install --save-dev yerbamate` in your node project.
@@ -47,10 +47,10 @@ yerbamate.run(pkg.start, pkg.dir, {args: "[my arguments]"} function(code, out, e
 
 * `loadPackage(module)` Will load your package.json module data, the returned object will contain the path to the `package.json` file, `main` and `start` script as well as `bin` and `scripts` objects from package.json.
 
-* `run(command, dir, options, done)` Will run the given command as a child_process in the given path. The options allows you to set callbacks for `stdout` and `stderr` outputs, as well as extra space-separated arguments with `args`. The callback will return the execution code of the process, an array with all the console outputs and an array with all the error outputs. The command returns the child process.
-  
+* `run(command, dir, options, done)` Will run the given command as a child_process in the given path. The options allows you to set callbacks for `stdout` and `stderr` outputs, extra space-separated arguments with `args` and environment variables with `env`. The callback will return the execution code of the process, an array with all the console outputs and an array with all the error outputs. The command returns the child process.
+
   * The callback parameters arrays stdout and stderr will return a different element per line break. Empty line-breaks will be ignored.
- 
+
 * `stop(process)` Will kill the given process, sending a `SIGTERM` signal.
 
 * `successCode(code)` Will return true if the given process code is 0, false otherwise.

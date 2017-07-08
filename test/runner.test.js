@@ -121,4 +121,35 @@ describe("Runner", function() {
             done();
         });
     });
+
+    it("Execute envs defined in command", function(done) {
+        run("testenv=dontpanic node print_env.js", testDir, {
+            args: "testenv"
+        }, function(code, outs, errs) {
+            assert.ok(outs);
+            assert.ok(errs);
+            assert.strictEqual(code, 0);
+            assert.lengthOf(outs, 1);
+            assert.lengthOf(errs, 0);
+            assert.strictEqual(outs[0], "dontpanic");
+            done();
+        });
+    });
+
+    it("Execute envs defined in options", function(done) {
+        run("node print_env.js", testDir, {
+            args: "testenv",
+            env: {
+                testenv: "dontpanic"
+            }
+        }, function(code, outs, errs) {
+            assert.ok(outs);
+            assert.ok(errs);
+            assert.strictEqual(code, 0);
+            assert.lengthOf(outs, 1);
+            assert.lengthOf(errs, 0);
+            assert.strictEqual(outs[0], "dontpanic");
+            done();
+        });
+    });
 });
