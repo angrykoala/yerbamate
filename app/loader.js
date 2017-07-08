@@ -19,16 +19,8 @@ function getContents(content, dir) {
 }
 
 function moduleLoader(pmodule, dir) {
-    if (!dir) {
-        dir = path.dirname(pmodule.filename || pmodule.id);
-    }
-
-    if (dir === '/') {
-        throw new Error('Could not find package.json up from ' +
-            (pmodule.filename || pmodule.id));
-    } else if (!dir || dir === '.') {
-        throw new Error('Cannot find package.json from unspecified directory');
-    }
+    dir = processDir(pmodule, dir);
+    validateDir(pmodule, dir);
 
     let contents;
     try {
@@ -38,6 +30,23 @@ function moduleLoader(pmodule, dir) {
     if (contents) return getContents(contents, dir);
 
     else return moduleLoader(pmodule, path.dirname(dir));
+}
+
+function processDir(pmodule, dir) {
+    if (!dir) {
+        dir = path.dirname(pmodule.filename || pmodule.id);
+    }
+
+
+    return dir;
+}
+
+function validateDir(pmodule, dir) {
+    if (dir === '/') {
+        throw new Error('Could not find package.json up from ' + (pmodule.filename || pmodule.id));
+    } else if (!dir || dir === '.') {
+        throw new Error('Cannot find package.json from unspecified directory');
+    }
 }
 
 

@@ -13,23 +13,7 @@ function processPath(dir) {
     return path.resolve(dir);
 }
 
-
-module.exports = function(command, dir, options, done) {
-    if (!done && typeof options === 'function') {
-        done = options;
-        options = null;
-    }
-    if (!done && !options && typeof dir === 'function') {
-        done = dir;
-        dir = null;
-        options = null;
-    }
-    if (!options && typeof dir === 'object') {
-        options = dir;
-        dir = null;
-    }
-    if (!options) options = {};
-
+function runProcess(command, dir, options, done) {
     const execOptions = {
         shell: true
     };
@@ -77,4 +61,24 @@ module.exports = function(command, dir, options, done) {
         if (done) done(code, filterOutput(outs), filterOutput(errs));
     });
     return proc;
+}
+
+
+module.exports = function(command, dir, options, done) {
+    if (!done && typeof options === 'function') {
+        done = options;
+        options = null;
+    }
+    if (!done && !options && typeof dir === 'function') {
+        done = dir;
+        dir = null;
+        options = null;
+    }
+    if (!options && typeof dir === 'object') {
+        options = dir;
+        dir = null;
+    }
+    if (!options) options = {};
+
+    return runProcess(command, dir, options, done);
 };
