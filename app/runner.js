@@ -44,7 +44,7 @@ module.exports = function(command, dir, options, done) {
     }
 
     if (options.env) {
-        execOptions.env = options.env;
+        execOptions.env = Object.assign({}, process.env, options.env);
     }
 
     var arr = command.split(" ").concat(args);
