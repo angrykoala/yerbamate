@@ -18,12 +18,16 @@ function processPath(dir) {
 module.exports = function(command, dir, options, done) {
     if (!done && typeof options === 'function') {
         done = options;
-        options = {};
+        options = null;
     }
     if (!done && !options && typeof dir === 'function') {
         done = dir;
         dir = null;
-        options = {};
+        options = null;
+    }
+    if (!options && typeof dir === 'object') {
+        options = dir;
+        dir = null;
     }
     if (!options) options = {};
 

@@ -152,4 +152,14 @@ describe("Runner", function() {
             done();
         });
     });
+
+    it("Execute script without dir argument and options", function(done) {
+        run("node " + path.join(testDir, testScript), {
+            args: ["myargument1", "myargument2"]
+        }, function(code, outs, errs) {
+            checkDefaultOutput(code, outs, errs);
+            assert.strictEqual(outs[1], "4");
+            done();
+        });
+    });
 });
