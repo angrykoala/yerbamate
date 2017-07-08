@@ -123,9 +123,9 @@ describe("Runner", function() {
     });
 
     it("Execute envs defined in command", function(done) {
-        run("testenv=dontpanic node print_env.js", testDir, {
-            args: "testenv"
-        }, function(code, outs, errs) {
+        run("testenv=dontpanic node print_env.js", testDir, function(code, outs, errs) {
+            console.log(outs);
+            console.log(errs);
             assert.ok(outs);
             assert.ok(errs);
             assert.strictEqual(code, 0);
@@ -138,7 +138,6 @@ describe("Runner", function() {
 
     it("Execute envs defined in options", function(done) {
         run("node print_env.js", testDir, {
-            args: "testenv",
             env: {
                 testenv: "dontpanic"
             }

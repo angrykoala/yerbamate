@@ -1,2 +1,2 @@
-envVar=process.env[process.argv[2]];
+envVar = process.env["testenv"];
 console.log(envVar)
