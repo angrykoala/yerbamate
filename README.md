@@ -16,6 +16,8 @@ Yerbamate consists in a **Runner** for asyncronous execution of commands and a *
 ## Installation
 To install yerbamate, simply execute `npm install --save-dev yerbamate` in your node project.
 
+> **WARNING:** Some features are limited on node 4 and before. It is recommended to use node 5 or higher
+
 ## Usage
 With _yerbamate_ you can easily test commands from your favorite Javascript testing framework simply importing it with `require('yerbamate')` and calling `yerbamate.run`.
 

@@ -1,7 +1,7 @@
-1.2.0 / ####-##-##
+1.2.0 / 2017-07-08
 ==================
 
-  * Option env supported to defined environment variables
+  * Option env supported to define environment variables
   * Parameter dir can now be omitted and still add an options parameter
   * Execution path tilde (~) expansion to homedir
   * Execution path is now resolved before being used
