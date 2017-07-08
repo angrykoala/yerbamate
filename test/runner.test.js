@@ -122,8 +122,7 @@ describe("Runner", function() {
         });
     });
 
-    // Skipped until multi-command issue is fixed in node <= 4
-    it.skip("Execute envs defined in command", function(done) {
+    it("Execute envs defined in command", function(done) {
         run("testenv=dontpanic node print_env.js", testDir, function(code, outs, errs) {
             assert.ok(outs);
             assert.ok(errs);

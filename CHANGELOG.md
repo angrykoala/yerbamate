@@ -1,4 +1,4 @@
-1.2.0 / 2017-07-08
+2.0.0 / 2017-07-08
 ==================
 
   * Option env supported to define environment variables
