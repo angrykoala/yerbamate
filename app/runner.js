@@ -1,4 +1,4 @@
-const process = require('child_process');
+const processChild = require('child_process');
 
 class Runner{
     static filterOutput(out) {
@@ -35,7 +35,7 @@ class Runner{
         let arr = command.split(' ').concat(args);
         let proc;
         try {
-            proc = process.spawn(arr.shift(), arr, execOptions);
+            proc = processChild.spawn(arr.shift(), arr, execOptions);
         } catch (e) {
             done(1, [], [e]);
             return null;

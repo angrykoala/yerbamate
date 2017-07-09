@@ -51,17 +51,15 @@ class Loader {
         }
         return Loader.getContents(JSON.parse(contents), path.dirname(filepath));
     }
-
-    static main(pmodule) {
-        if (!pmodule) {
-            throw new Error('yerbamate loader - Not module found');
-        }
-
-        return (typeof pmodule === 'string') ?
-            Loader.fileLoader(pmodule) :
-            Loader.moduleLoader(pmodule);
-    }
 }
 
 
-module.exports = Loader.main;
+module.exports = (pmodule) => {
+    if (!pmodule) {
+        throw new Error('yerbamate loader - Not module found');
+    }
+
+    return (typeof pmodule === 'string') ?
+        Loader.fileLoader(pmodule) :
+        Loader.moduleLoader(pmodule);
+};
