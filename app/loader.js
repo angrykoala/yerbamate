@@ -7,14 +7,14 @@ Loads all the scripts and binaries data from a module package.json
 const path = require('path');
 const fs = require('fs');
 
-class Loader{
+class Loader {
     static getContents(content, dir) {
         return {
-            dir     : dir,
-            main    : content.main ? "node " + content.main : undefined,
-            start   : content.scripts ? content.scripts.start : undefined,
-            bin     : content.bin || {},
-            scripts : content.scripts || {}
+            dir: dir,
+            main: content.main ? "node " + content.main : undefined,
+            start: content.scripts ? content.scripts.start : undefined,
+            bin: content.bin || {},
+            scripts: content.scripts || {}
         };
     }
 

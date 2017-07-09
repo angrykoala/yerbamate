@@ -4,8 +4,7 @@ const path = require('path');
 const childProcess = require('child_process');
 const untildify = require('untildify');
 
-class Runner{
-
+class Runner {
 
     static filterOutput(out) {
         return out.split('\n').filter(Boolean);

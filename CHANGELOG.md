@@ -1,3 +1,9 @@
+2.0.1 / ####-##-##
+==================
+
+  * Minor general refactor
+  * README file code examples updated
+
 2.0.0 / 2017-07-08
 ==================
 

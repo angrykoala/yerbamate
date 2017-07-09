@@ -1,6 +1,6 @@
 {
   "name": "yerbamate",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Test oriented task runner library",
   "main": "index.js",
   "scripts": {
