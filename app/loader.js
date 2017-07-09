@@ -10,11 +10,11 @@ const fs = require('fs');
 class Loader{
     static getContents(content, dir) {
         return {
-            dir,
-            main: content.main ? "node " + content.main : undefined,
-            start: content.scripts ? content.scripts.start : undefined,
-            bin: content.bin || {},
-            scripts: content.scripts || {}
+            dir     : dir,
+            main    : content.main ? "node " + content.main : undefined,
+            start   : content.scripts ? content.scripts.start : undefined,
+            bin     : content.bin || {},
+            scripts : content.scripts || {}
         };
     }
 
@@ -34,8 +34,6 @@ class Loader{
         if (!dir) {
             dir = path.dirname(pmodule.filename || pmodule.id);
         }
-
-
         return dir;
     }
 

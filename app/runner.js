@@ -66,23 +66,22 @@ class Runner{
         return proc;
     }
 
-    static run(command, dir, options, done) {
-        if (!done && typeof options === 'function') {
-            done = options;
-            options = null;
-        }
-        if (!done && !options && typeof dir === 'function') {
-            done = dir;
-            dir = null;
-            options = null;
-        }
-        if (!options && typeof dir === 'object') {
-            options = dir;
-            dir = null;
-        }
-        if (!options) options = {};
-
-        return Runner.runProcess(command, dir, options, done);
-    }
 }
-module.exports = Runner.run;
+module.exports = (command, dir, options, done) => {
+    if (!done && typeof options === 'function') {
+        done = options;
+        options = null;
+    }
+    if (!done && !options && typeof dir === 'function') {
+        done = dir;
+        dir = null;
+        options = null;
+    }
+    if (!options && typeof dir === 'object') {
+        options = dir;
+        dir = null;
+    }
+    if (!options) options = {};
+
+    return Runner.runProcess(command, dir, options, done);
+};
