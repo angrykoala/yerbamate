@@ -20,9 +20,9 @@ To install yerbamate, simply execute `npm install --save-dev yerbamate` in your 
 With _yerbamate_ you can easily test commands from your favorite Javascript testing framework simply importing it with `require('yerbamate')` and calling `yerbamate.run`.
 
 ```js
-var yerbamate=require('yerbamate');
+const yerbamate = require('yerbamate');
 
-yerbamate.run("cat my_file.md", function(code, out, errs){
+yerbamate.run("cat my_file.md", (code, out, errs) => {
     if(!yerbamate.successCode(code)) console.log("Error: " + errs[0]);
     else console.log("Success - " + out);    
 });
@@ -31,9 +31,9 @@ yerbamate.run("cat my_file.md", function(code, out, errs){
 _Yerbamate_ also provides easy access to you package.json defined scripts and commands, so you can test your module easily with `yerbamate.loadPackage`.
 
 ```js
-var yerbamate=require('yerbamate');
+const yerbamate = require('yerbamate');
 
-var pkg=yerbamate.loadPackage(module);
+let pkg = yerbamate.loadPackage(module);
 
 //Test the package.json start script
 yerbamate.run(pkg.start, pkg.dir, {args: "[my arguments]"} function(code, out, errs){
