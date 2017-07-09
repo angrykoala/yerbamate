@@ -33,7 +33,7 @@ _Yerbamate_ also provides easy access to you package.json defined scripts and co
 ```js
 const yerbamate = require('yerbamate');
 
-let pkg = yerbamate.loadPackage(module);
+const pkg = yerbamate.loadPackage(module);
 
 //Test the package.json start script
 yerbamate.run(pkg.start, pkg.dir, {args: "[my arguments]"} function(code, out, errs){
