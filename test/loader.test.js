@@ -71,17 +71,15 @@ describe("Loader", () => {
         const testModule = {
             id: path.join(__dirname, "./config/test_package.json")
         };
-        let pkg;
-        pkg = loader(testModule);
+        const pkg = loader(testModule);
         assert.ok(pkg);
         assert.ok(pkg.scripts);
         assert.ok(pkg.scripts.test);
     });
 
     it("Empty package.json", () => {
-        let pkg;
         const p = path.join(__dirname, "./config/empty_package.json");
-        pkg = loader(p);
+        const pkg = loader(p);
         assert.ok(pkg);
         assert.ok(pkg.dir);
         assert.strictEqual(pkg.dir, path.join(p, ".."));

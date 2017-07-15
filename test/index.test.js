@@ -15,7 +15,7 @@ describe("Yerbamate index", () => {
         assert.ok(yerbamate.stop);
         assert.typeOf(yerbamate.stop, 'function');
     });
-    it("successCode()", () => {
+    it("Success Code", () => {
         assert.ok(yerbamate.successCode);
         assert.typeOf(yerbamate.successCode, 'function');
         assert.strictEqual(yerbamate.successCode(), false);

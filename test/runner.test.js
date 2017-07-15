@@ -6,10 +6,10 @@ const path = require('path');
 const run = require('../app/runner.js');
 const stop = require('../index').stop;
 
-const testDir = path.join(__dirname, "config");
 
 const config = require('./config/config');
 const testScript = config.testScript;
+const testDir = path.join(__dirname, "config");
 
 
 describe("Runner", () => {
@@ -98,7 +98,7 @@ describe("Runner", () => {
     });
 
     it("Stop process callback", (done) => {
-        const proc = run("node", function() {});
+        const proc = run("node", () => {});
         assert.ok(proc);
         stop(proc, function(err) {
             assert.notOk(err);
@@ -141,7 +141,7 @@ describe("Runner", () => {
             env: {
                 testenv: "dontpanic"
             }
-        }, function(code, outs, errs) {
+        }, (code, outs, errs) => {
             assert.ok(outs);
             assert.ok(errs);
             assert.strictEqual(code, 0);
@@ -155,7 +155,7 @@ describe("Runner", () => {
     it("Execute script without dir argument and options", (done) => {
         run("node " + path.join(testDir, testScript), {
             args: ["myargument1", "myargument2"]
-        }, function(code, outs, errs) {
+        }, (code, outs, errs) => {
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "4");
             done();
