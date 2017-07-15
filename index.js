@@ -11,6 +11,6 @@ const loader = require('./app/loader');
 module.exports = {
     run: runner,
     loadPackage: loader,
-    stop: (proc, cb) => kill(proc.pid, 'SIGKILL', cb), //This sends SIGTERM
+    stop: (proc, cb) => kill(proc.pid, 'SIGKILL', cb),
     successCode: (code) => code === 0
 };
