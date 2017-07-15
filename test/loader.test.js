@@ -5,8 +5,8 @@ const path = require('path');
 
 const loader = require('../app/loader');
 
-describe("Loader", function() {
-    it("Check module content", function() {
+describe("Loader", () => {
+    it("Check module content", () => {
         assert.ok(loader);
         const pkg = loader(module);
         assert.ok(pkg);
@@ -19,7 +19,7 @@ describe("Loader", function() {
         assert.lengthOf(Object.keys(pkg.bin), 0);
     });
 
-    it("Invalid module", function() {
+    it("Invalid module", () => {
         let pkg;
         assert.throws(loader);
         try {
@@ -30,7 +30,7 @@ describe("Loader", function() {
         }
     });
 
-    it("Loading from package.json file", function() {
+    it("Loading from package.json file", () => {
         const pkg = loader(path.join(__dirname, "../package.json"));
         assert.ok(pkg);
         assert.strictEqual(pkg.dir, path.join(__dirname, '..'));
@@ -42,7 +42,7 @@ describe("Loader", function() {
         assert.lengthOf(Object.keys(pkg.bin), 0);
     });
 
-    it("Invalid path", function() {
+    it("Invalid path", () => {
         assert.throws(loader);
         let pkg;
         try {
@@ -53,7 +53,7 @@ describe("Loader", function() {
         }
     });
 
-    it("Invalid module", function() {
+    it("Invalid module", () => {
         assert.throws(loader);
         const testModule = {
             filename: "falsePath"
@@ -67,21 +67,19 @@ describe("Loader", function() {
         }
     });
 
-    it("Module with id", function() {
+    it("Module with id", () => {
         const testModule = {
             id: path.join(__dirname, "./config/test_package.json")
         };
-        let pkg;
-        pkg = loader(testModule);
+        const pkg = loader(testModule);
         assert.ok(pkg);
         assert.ok(pkg.scripts);
         assert.ok(pkg.scripts.test);
     });
 
-    it("Empty package.json", function() {
-        let pkg;
+    it("Empty package.json", () => {
         const p = path.join(__dirname, "./config/empty_package.json");
-        pkg = loader(p);
+        const pkg = loader(p);
         assert.ok(pkg);
         assert.ok(pkg.dir);
         assert.strictEqual(pkg.dir, path.join(p, ".."));

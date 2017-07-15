@@ -20,25 +20,26 @@ To install yerbamate, simply execute `npm install --save-dev yerbamate` in your 
 With _yerbamate_ you can easily test commands from your favorite Javascript testing framework simply importing it with `require('yerbamate')` and calling `yerbamate.run`.
 
 ```js
-var yerbamate=require('yerbamate');
+const yerbamate = require('yerbamate');
 
-yerbamate.run("cat my_file.md", function(code, out, errs){
-    if(!yerbamate.successCode(code)) console.log("Error: " + errs[0]);
-    else console.log("Success - " + out);    
+yerbamate.run("cat my_file.md", (code, out, errs) => {
+    if (!yerbamate.successCode(code)) console.log("Error: " + errs[0]);
+    else console.log("Success - " + out);
 });
 ```
 
 _Yerbamate_ also provides easy access to you package.json defined scripts and commands, so you can test your module easily with `yerbamate.loadPackage`.
 
 ```js
-var yerbamate=require('yerbamate');
-
-var pkg=yerbamate.loadPackage(module);
+const yerbamate = require('yerbamate');
+const pkg = yerbamate.loadPackage(module);
 
 //Test the package.json start script
-yerbamate.run(pkg.start, pkg.dir, {args: "[my arguments]"} function(code, out, errs){
-    if(!yerbamate.successCode(code)) console.log("Process exited with error code");
-    if(errs.length > 0) console.log("Errors in process:" + errs.length);
+yerbamate.run(pkg.start, pkg.dir, {
+    args: "[my arguments]"
+}, function(code, out, errs) {
+    if (!yerbamate.successCode(code)) console.log("Process exited with error code");
+    if (errs.length > 0) console.log("Errors in process:" + errs.length);
     console.log("Output: " + out[0]);
 });
 ```

@@ -6,30 +6,30 @@ const path = require('path');
 const run = require('../app/runner.js');
 const stop = require('../index').stop;
 
-const testDir = path.join(__dirname, "config");
 
 const config = require('./config/config');
 const testScript = config.testScript;
+const testDir = path.join(__dirname, "config");
 
 
-describe("Runner", function() {
+describe("Runner", () => {
     const checkDefaultOutput = config.checkDefaultOutput;
 
-    it("Execute script", function(done) {
-        run("node " + path.join(testDir, testScript), function(code, outs, errs) {
+    it("Execute script", (done) => {
+        run("node " + path.join(testDir, testScript), (code, outs, errs) => {
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "2");
             done();
         });
     });
-    it("Different directory", function(done) {
-        run("node " + testScript, testDir, function(code, outs, errs) {
+    it("Different directory", (done) => {
+        run("node " + testScript, testDir, (code, outs, errs) => {
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "2");
             done();
         });
     });
-    it("Execute command with args", function(done) {
+    it("Execute command with args", (done) => {
         run("node " + testScript, testDir, {
             args: "myargument1 myargument2"
         }, function(code, outs, errs) {
@@ -38,7 +38,7 @@ describe("Runner", function() {
             done();
         });
     });
-    it("Script returning error code", function(done) {
+    it("Script returning error code", (done) => {
         run("node " + testScript, testDir, {
             args: "-error"
         }, function(code, outs, errs) {
@@ -53,8 +53,8 @@ describe("Runner", function() {
             done();
         });
     });
-    it("Invalid command", function(done) {
-        run(testScript, testDir, function(code, outs, errs) {
+    it("Invalid command", (done) => {
+        run(testScript, testDir, (code, outs, errs) => {
             assert.notEqual(code, 0);
             assert.lengthOf(outs, 0);
             assert.lengthOf(errs, 1);
@@ -63,14 +63,14 @@ describe("Runner", function() {
 
     });
 
-    it("Stout and stderr hooks", function(done) {
+    it("Stout and stderr hooks", (done) => {
         let outTest = "";
         let errTest = "";
-        const onOut = function(data) {
+        const onOut = (data) => {
             assert.typeOf(data, "string");
             outTest += data;
         };
-        const onErr = function(data) {
+        const onErr = (data) => {
             assert.typeOf(data, "string");
             errTest += data;
         };
@@ -88,8 +88,8 @@ describe("Runner", function() {
         });
     });
 
-    it("Stop process", function(done) {
-        const proc = run("node", function(code) {
+    it("Stop process", (done) => {
+        const proc = run("node", (code) => {
             assert.notEqual(code, 0);
             done();
         });
@@ -97,8 +97,8 @@ describe("Runner", function() {
         stop(proc);
     });
 
-    it("Stop process callback", function(done) {
-        const proc = run("node", function() {});
+    it("Stop process callback", (done) => {
+        const proc = run("node", () => {});
         assert.ok(proc);
         stop(proc, function(err) {
             assert.notOk(err);
@@ -106,7 +106,7 @@ describe("Runner", function() {
         });
     });
 
-    it("Array arguments", function(done) {
+    it("Array arguments", (done) => {
         run("node " + testScript, testDir, {
             args: ["myargument1", "myargument2"]
         }, function(code, outs, errs) {
@@ -116,16 +116,16 @@ describe("Runner", function() {
         });
     });
 
-    it("Execute script with undefined options and arguments", function(done) {
-        run("node " + path.join(testDir, testScript), undefined, undefined, function(code, outs, errs) {
+    it("Execute script with undefined options and arguments", (done) => {
+        run("node " + path.join(testDir, testScript), undefined, undefined, (code, outs, errs) => {
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "2");
             done();
         });
     });
 
-    it("Execute envs defined in command", function(done) {
-        run("testenv=dontpanic node print_env.js", testDir, function(code, outs, errs) {
+    it("Execute envs defined in command", (done) => {
+        run("testenv=dontpanic node print_env.js", testDir, (code, outs, errs) => {
             assert.ok(outs);
             assert.ok(errs);
             assert.strictEqual(code, 0);
@@ -136,12 +136,12 @@ describe("Runner", function() {
         });
     });
 
-    it("Execute envs defined in options", function(done) {
+    it("Execute envs defined in options", (done) => {
         run("node print_env.js", testDir, {
             env: {
                 testenv: "dontpanic"
             }
-        }, function(code, outs, errs) {
+        }, (code, outs, errs) => {
             assert.ok(outs);
             assert.ok(errs);
             assert.strictEqual(code, 0);
@@ -152,10 +152,10 @@ describe("Runner", function() {
         });
     });
 
-    it("Execute script without dir argument and options", function(done) {
+    it("Execute script without dir argument and options", (done) => {
         run("node " + path.join(testDir, testScript), {
             args: ["myargument1", "myargument2"]
-        }, function(code, outs, errs) {
+        }, (code, outs, errs) => {
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "4");
             done();

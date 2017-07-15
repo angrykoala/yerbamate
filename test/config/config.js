@@ -2,7 +2,7 @@
 const assert = require('chai').assert;
 
 module.exports = {
-    checkDefaultOutput: function(code, outs, errs) {
+    checkDefaultOutput(code, outs, errs) {
         assert.ok(outs);
         assert.ok(errs);
         assert.strictEqual(code, 0, "Execution was not successfull");
