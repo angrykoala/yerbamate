@@ -2,6 +2,7 @@
 ==================
 
   * Minor general refactor
+  * Added package-lock file
   * README file code examples updated
 
 2.0.0 / 2017-07-08

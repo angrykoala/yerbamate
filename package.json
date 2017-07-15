@@ -4,8 +4,9 @@
   "description": "Test oriented task runner library",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover _mocha && npm run jshint",
-    "jshint": "jshint *.js app/*.js test/*.js"
+    "test": "istanbul cover _mocha",
+    "jshint": "jshint *.js app/*.js test/*.js",
+    "posttest": "npm run jshint"
   },
   "repository": {
     "type": "git",

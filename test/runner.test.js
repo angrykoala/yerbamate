@@ -161,8 +161,4 @@ describe("Runner", () => {
             done();
         });
     });
-
-    it.skip("Using tilde path", () => {
-
-    });
 });
