@@ -2,6 +2,7 @@
 ==================
 
   * Dependencies update
+  * Removed unnecessary files from pack
 
 2.0.1 / 2017-07-15
 ==================
