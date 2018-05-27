@@ -1,6 +1,6 @@
 {
   "name": "yerbamate",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Test oriented task runner library",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,9 @@
     "command",
     "line"
   ],
+  "files": [
+    "app"
+  ],
   "author": "angrykoala <angrykoala@outlook.es>",
   "license": "GPL-3.0",
   "bugs": {
@@ -27,16 +30,16 @@
   },
   "homepage": "https://github.com/angrykoala/yerbamate#readme",
   "devDependencies": {
-    "chai": "^4.0.2",
+    "chai": "^4.1.2",
     "istanbul": "^0.4.5",
     "jshint": "^2.9.5",
-    "mocha": "^3.1.2"
+    "mocha": "^5.2.0"
   },
   "engines": {
     "node": ">= 5.12.0"
   },
   "dependencies": {
-    "tree-kill": "^1.1.0",
-    "untildify": "^3.0.2"
+    "tree-kill": "^1.2.0",
+    "untildify": "^3.0.3"
   }
 }
