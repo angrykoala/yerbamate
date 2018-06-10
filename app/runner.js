@@ -46,11 +46,13 @@ class Runner {
 
         proc.stdout.on('data', (data) => {
             outs += data;
+            if (options.maxOutputSize) outs = outs.slice(-options.maxOutputSize);
             if (options.stdout) options.stdout(data.toString());
         });
 
         proc.stderr.on('data', (data) => {
             errs += data;
+            if (options.maxOutputSize) errs = errs.slice(-options.maxOutputSize);
             if (options.stderr) options.stderr(data.toString());
         });
 
