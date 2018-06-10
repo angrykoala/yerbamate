@@ -161,4 +161,15 @@ describe("Runner", () => {
             done();
         });
     });
+
+    it("Execute script with max output", (done) => {
+        run("node " + path.join(testDir, testScript),{maxOutputSize: 10}, (code, outs, errs) => {
+            assert.lengthOf(outs, 2);
+            assert.strictEqual(outs[0], "running");
+            assert.strictEqual(outs[1], "2");
+            assert.lengthOf(errs, 1);
+            assert.strictEqual(errs[0], "g example");
+            done();
+        });
+    });
 });

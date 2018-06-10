@@ -48,9 +48,14 @@ yerbamate.run(pkg.start, pkg.dir, {
 
 * `loadPackage(module)` Will load your package.json module data, the returned object will contain the path to the `package.json` file, `main` and `start` script as well as `bin` and `scripts` objects from package.json.
 
-* `run(command, dir, options, done)` Will run the given command as a child_process in the given path. The options allows you to set callbacks for `stdout` and `stderr` outputs, extra space-separated arguments with `args` and environment variables with `env`. The callback will return the execution code of the process, an array with all the console outputs and an array with all the error outputs. The command returns the child process.
+* `run(command, dir, options, done)` Will run the given command as a child_process in the given path. The callback will return the execution code of the process, an array with all the console outputs and an array with all the error outputs. The dona callback parameters stdout and stderr will return a different element per line break. Empty line-breaks will be ignored. The command returns the child process. The following options are supported:
 
-  * The callback parameters arrays stdout and stderr will return a different element per line break. Empty line-breaks will be ignored.
+  * `args` an array or string of the arguments to be passed to the command.
+  * `stdout` callback for stdout events.
+  * `stderr` callback for stderr events.
+  * `env` environmnet variables to be set when the command is executed.
+  * `maxOutputSize` Sets the maximum output that will be returned to the `done` callback, only the last characters will be sent. If none is set, all the output will be returned. The characters count also takes in account new line characters.
+
 
 * `stop(process)` Will kill the given process, sending a `SIGTERM` signal.
 
