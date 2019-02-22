@@ -4,7 +4,7 @@
   "description": "Test oriented task runner library",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover _mocha",
+    "test": "nyc mocha",
     "jshint": "jshint *.js app/*.js test/*.js",
     "posttest": "npm run jshint"
   },
@@ -31,9 +31,9 @@
   "homepage": "https://github.com/angrykoala/yerbamate#readme",
   "devDependencies": {
     "chai": "^4.2.0",
-    "istanbul": "^0.4.5",
     "jshint": "^2.10.1",
-    "mocha": "^6.0.1"
+    "mocha": "^6.0.1",
+    "nyc": "^13.3.0"
   },
   "engines": {
     "node": ">= 5.12.0"
