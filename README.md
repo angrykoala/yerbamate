@@ -57,7 +57,7 @@ yerbamate.run(pkg.start, pkg.dir, {
   * `maxOutputSize` Sets the maximum output that will be returned to the `done` callback, only the last characters will be sent. If none is set, all the output will be returned. The characters count also takes in account new line characters.
 
 
-* `stop(process)` Will kill the given process, sending a `SIGTERM` signal.
+* `stop(process, done)` Will kill the given process, sending a `SIGTERM` signal.
 
 * `successCode(code)` Will return true if the given process code is 0, false otherwise.
 

@@ -68,7 +68,8 @@ class Runner {
     }
 
 }
-module.exports = (command, dir, options, done) => {
+
+module.exports = function(command, dir, options, done) {
     if (!done && typeof options === 'function') {
         done = options;
         options = null;
