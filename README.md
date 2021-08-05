@@ -74,4 +74,4 @@ Thanks for your help!
 ## Acknowledgments
 * [pkginfo](https://github.com/indexzero/node-pkginfo) as inspiration for yerbamate loader.
 
-> Yerbamate is developed under GNU GPL-3 license by @angrykoala.
+> Yerbamate is developed under MIT license by @angrykoala.
