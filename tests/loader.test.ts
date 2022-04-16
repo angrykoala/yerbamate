@@ -1,9 +1,9 @@
-"use strict";
+import path from 'path';
+import { assert } from 'chai';
 
-const assert = require('chai').assert;
-const path = require('path');
+import yerbamate from '../main';
 
-const loader = require('../index').loadPackage;
+const loader = yerbamate.loadPackage
 
 describe("Loader", () => {
     it("Check module content", () => {
@@ -21,9 +21,9 @@ describe("Loader", () => {
 
     it("Invalid module", () => {
         let pkg;
-        assert.throws(loader);
+        assert.throws(loader as any);
         try {
-            pkg = loader();
+            pkg = (loader as any)();
         } catch (e) {
             assert.ok(e);
             assert.notOk(pkg);
@@ -43,7 +43,7 @@ describe("Loader", () => {
     });
 
     it("Invalid path", () => {
-        assert.throws(loader);
+        assert.throws(loader as any);
         let pkg;
         try {
             pkg = loader("falsePath");
@@ -54,7 +54,7 @@ describe("Loader", () => {
     });
 
     it("Invalid module", () => {
-        assert.throws(loader);
+        assert.throws(loader as any);
         const testModule = {
             filename: "falsePath"
         };

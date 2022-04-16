@@ -1,13 +1,11 @@
-"use strict";
+import path from 'path';
+import { assert } from 'chai';
 
-const assert = require('chai').assert;
-const path = require('path');
+import config from './config/config';
+import yerbamate from '../main';
 
-const run = require('../index').run;
-const stop = require('../index').stop;
+const { run, stop } = yerbamate;
 
-
-const config = require('./config/config');
 const testScript = config.testScript;
 const testDir = path.join(__dirname, "config");
 
@@ -66,11 +64,11 @@ describe("Runner", () => {
     it("Stout and stderr hooks", (done) => {
         let outTest = "";
         let errTest = "";
-        const onOut = (data) => {
+        const onOut = (data: any) => {
             assert.typeOf(data, "string");
             outTest += data;
         };
-        const onErr = (data) => {
+        const onErr = (data: any) => {
             assert.typeOf(data, "string");
             errTest += data;
         };
@@ -79,11 +77,11 @@ describe("Runner", () => {
             stdout: onOut,
             stderr: onErr
         }, function(code, outs, errs) {
-            outTest = outTest.split('\n').filter(Boolean);
-            errTest = errTest.split('\n').filter(Boolean);
+            const outTestArr = outTest.split('\n').filter(Boolean);
+            const errTestArr = errTest.split('\n').filter(Boolean);
             checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "2");
-            checkDefaultOutput(code, outTest, errTest);
+            checkDefaultOutput(code, outTestArr, errTestArr);
             done();
         });
     });
@@ -98,9 +96,9 @@ describe("Runner", () => {
     });
 
     it("Stop process callback", (done) => {
-        const proc = run("node", () => {});
+        const proc = run("node", () => { });
         assert.ok(proc);
-        stop(proc, function(err) {
+        stop(proc, function(err: any) {
             assert.notOk(err);
             done();
         });

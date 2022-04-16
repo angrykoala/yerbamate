@@ -1,9 +1,7 @@
-"use strict";
+import { assert } from 'chai';
 
-const assert = require('chai').assert;
-
-const yerbamate = require('../index');
-const config = require('./config/config');
+import yerbamate from '../main';
+import config from './config/config';
 
 describe("Yerbamate index", () => {
     it("Main Functions", () => {
@@ -30,10 +28,10 @@ describe("Yerbamate index", () => {
     it("Running from package.json", (done) => {
         const pkg = yerbamate.loadPackage(__dirname + '/config/test_package.json');
         assert.ok(pkg);
-        yerbamate.run(pkg.start, pkg.dir, {}, (code, outs, errs) => {
+        yerbamate.run(pkg.start, pkg.dir, {}, (code: any, outs: any, errs: any) => {
             config.checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs[1], "2");
-            yerbamate.run(pkg.main, pkg.dir, {}, (code, outs, errs) => {
+            yerbamate.run(pkg.main, pkg.dir, {}, (code: any, outs: any, errs: any) => {
                 config.checkDefaultOutput(code, outs, errs);
                 assert.strictEqual(outs[1], "2");
                 done();

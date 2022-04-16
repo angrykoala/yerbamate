@@ -1,8 +1,7 @@
-"use strict";
-const assert = require('chai').assert;
+import { assert } from 'chai';
 
-module.exports = {
-    checkDefaultOutput(code, outs, errs) {
+export default {
+    checkDefaultOutput(code: any, outs: any, errs: any) {
         assert.ok(outs);
         assert.ok(errs);
         assert.strictEqual(code, 0, "Execution was not successfull");

@@ -1,7 +1,7 @@
 "use strict";
 
 import path from 'path';
-import childProcess from 'child_process';
+import childProcess, { ChildProcess } from 'child_process';
 import untildify from 'untildify';
 
 class Runner {
@@ -66,22 +66,28 @@ class Runner {
         });
         return proc;
     }
-
 }
 
-export function run(command: any, dir: any, options: any, done: any) {
+
+type DoneCallback = (code: number, out: string[], err: string[]) => void
+
+
+export function run(command: string, done: DoneCallback): ChildProcess | null;
+export function run(command: any, dir: any, options: Record<string, any> | undefined, done: DoneCallback): ChildProcess;
+export function run(command: any, dir: any, done: DoneCallback): ChildProcess;
+export function run(command: any, dir?: any, options?: Record<string, any> | DoneCallback, done?: DoneCallback): ChildProcess | null {
     if (!done && typeof options === 'function') {
-        done = options;
-        options = null;
+        done = options as any;
+        options = undefined;
     }
     if (!done && !options && typeof dir === 'function') {
         done = dir;
-        dir = null;
-        options = null;
+        dir = undefined;
+        options = undefined;
     }
     if (!options && typeof dir === 'object') {
         options = dir;
-        dir = null;
+        dir = undefined;
     }
     if (!options) options = {};
 
