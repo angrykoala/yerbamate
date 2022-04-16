@@ -11,7 +11,7 @@ describe("Loader", () => {
         const pkg = loader(module);
         assert.ok(pkg);
         assert.strictEqual(pkg.dir, path.join(__dirname, '..'));
-        assert.strictEqual(pkg.main, 'node index.js');
+        assert.strictEqual(pkg.main, 'node dist/main.js');
         assert.ok(pkg.scripts);
         assert.ok(pkg.scripts.test);
         assert.isUndefined(pkg.start);
@@ -34,7 +34,7 @@ describe("Loader", () => {
         const pkg = loader(path.join(__dirname, "../package.json"));
         assert.ok(pkg);
         assert.strictEqual(pkg.dir, path.join(__dirname, '..'));
-        assert.strictEqual(pkg.main, 'node index.js');
+        assert.strictEqual(pkg.main, 'node dist/main.js');
         assert.ok(pkg.scripts);
         assert.ok(pkg.scripts.test);
         assert.isUndefined(pkg.start);

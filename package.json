@@ -2,7 +2,7 @@
   "name": "yerbamate",
   "version": "3.0.0",
   "description": "Test oriented task runner library",
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
     "test": "nyc mocha",
     "jshint": "jshint *.js app/*.js test/*.js",

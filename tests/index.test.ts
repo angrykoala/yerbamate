@@ -13,6 +13,7 @@ describe("Yerbamate index", () => {
         assert.ok(yerbamate.stop);
         assert.typeOf(yerbamate.stop, 'function');
     });
+
     it("Success Code", () => {
         assert.ok(yerbamate.successCode);
         assert.typeOf(yerbamate.successCode, 'function');
@@ -25,6 +26,7 @@ describe("Yerbamate index", () => {
         assert.strictEqual(yerbamate.successCode(true), false);
         assert.strictEqual(yerbamate.successCode(2), false);
     });
+
     it("Running from package.json", (done) => {
         const pkg = yerbamate.loadPackage(__dirname + '/config/test_package.json');
         assert.ok(pkg);

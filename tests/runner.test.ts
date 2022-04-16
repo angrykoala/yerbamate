@@ -20,6 +20,7 @@ describe("Runner", () => {
             done();
         });
     });
+
     it("Different directory", (done) => {
         run("node " + testScript, testDir, (code, outs, errs) => {
             checkDefaultOutput(code, outs, errs);
@@ -27,6 +28,7 @@ describe("Runner", () => {
             done();
         });
     });
+
     it("Execute command with args", (done) => {
         run("node " + testScript, testDir, {
             args: "myargument1 myargument2"
@@ -36,6 +38,7 @@ describe("Runner", () => {
             done();
         });
     });
+
     it("Script returning error code", (done) => {
         run("node " + testScript, testDir, {
             args: "-error"
@@ -51,6 +54,7 @@ describe("Runner", () => {
             done();
         });
     });
+
     it("Invalid command", (done) => {
         run(testScript, testDir, (code, outs, errs) => {
             assert.notEqual(code, 0);
