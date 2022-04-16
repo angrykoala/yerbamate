@@ -3,18 +3,22 @@ Yerbamate
 _by @angrykoala_
 
 [![npm version](https://badge.fury.io/js/yerbamate.svg)](https://badge.fury.io/js/yerbamate)
-[![Build Status](https://travis-ci.org/angrykoala/yerbamate.svg?branch=master)](https://travis-ci.org/angrykoala/yerbamate)
-[![codecov](https://codecov.io/gh/angrykoala/yerbamate/branch/master/graph/badge.svg)](https://codecov.io/gh/angrykoala/yerbamate)
 
+> The js library for command-line testing.
 
-> The js task-runner library for command-line interfaces testing.
+Sometimes, you want to add automated tests for your CLI. With _Yerbamate_, you can test your CLI directly within your favorite testing framework like _mocha_ without the mess of creating scripts or child_process:
 
-Sometimes, you want to add automated tests for your node-based CLI. With _Yerbamate_ now you can test your programs directly within your favorite testing framework like _mocha_ without the mess of creating complex gulp pipelines or adding extra bash scripts. Just with ol' good Javascript.
+```javascript
+const yerbamate = require('yerbamate');
 
-Yerbamate consists in a **Runner** for asyncronous execution of commands and a **Loader** to easily import the information of your _package.json_ without hard-coding paths and variables in your tests.
+yerbamate.run("cat my_file.md", (code, out, errs) => {
+    if (!yerbamate.successCode(code)) console.log("Error: " + errs[0]);
+    else console.log("Success - " + out);
+});
+```
 
-## Installation
-To install yerbamate, simply execute `npm install --save-dev yerbamate` in your node project.
+## Install Yerbamate
+Run `npm install --save-dev yerbamate` to install yerbamate as a dev dependency.
 
 ## Usage
 With _yerbamate_ you can easily test commands from your favorite Javascript testing framework simply importing it with `require('yerbamate')` and calling `yerbamate.run`.

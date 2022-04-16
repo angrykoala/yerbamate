@@ -3,7 +3,7 @@
 const assert = require('chai').assert;
 const path = require('path');
 
-const run = require('../app/runner.js');
+const run = require('../index').run;
 const stop = require('../index').stop;
 
 
@@ -163,7 +163,9 @@ describe("Runner", () => {
     });
 
     it("Execute script with max output", (done) => {
-        run("node " + path.join(testDir, testScript),{maxOutputSize: 10}, (code, outs, errs) => {
+        run("node " + path.join(testDir, testScript), {
+            maxOutputSize: 10
+        }, (code, outs, errs) => {
             assert.lengthOf(outs, 2);
             assert.strictEqual(outs[0], "running");
             assert.strictEqual(outs[1], "2");

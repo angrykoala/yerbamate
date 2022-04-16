@@ -1,22 +1,22 @@
 "use strict";
 
-const path = require('path');
-const childProcess = require('child_process');
-const untildify = require('untildify');
+import path from 'path';
+import childProcess from 'child_process';
+import untildify from 'untildify';
 
 class Runner {
 
-    static filterOutput(out) {
+    static filterOutput(out: any) {
         return out.split('\n').filter(Boolean);
     }
 
-    static processPath(dir) {
+    static processPath(dir: any) {
         dir = untildify(dir).trim();
         return path.resolve(dir);
     }
 
-    static runProcess(command, dir, options, done) {
-        const execOptions = {
+    static runProcess(command: any, dir: any, options: any, done: any) {
+        const execOptions: any = {
             shell: true
         };
         let args = [];
@@ -44,23 +44,23 @@ class Runner {
         let outs = "";
         let errs = "";
 
-        proc.stdout.on('data', (data) => {
+        proc.stdout.on('data', (data: any) => {
             outs += data;
             if (options.maxOutputSize) outs = outs.slice(-options.maxOutputSize);
             if (options.stdout) options.stdout(data.toString());
         });
 
-        proc.stderr.on('data', (data) => {
+        proc.stderr.on('data', (data: any) => {
             errs += data;
             if (options.maxOutputSize) errs = errs.slice(-options.maxOutputSize);
             if (options.stderr) options.stderr(data.toString());
         });
 
-        proc.on('error', (err) => {
+        proc.on('error', (err: any) => {
             errs += err;
         });
 
-        proc.on('close', (code, signal) => {
+        proc.on('close', (code: any, signal: any) => {
             if (signal === "SIGTERM" && code === null) code = 143;
             if (done) done(code, Runner.filterOutput(outs), Runner.filterOutput(errs));
         });
@@ -69,7 +69,7 @@ class Runner {
 
 }
 
-module.exports = function(command, dir, options, done) {
+export function run(command: any, dir: any, options: any, done: any) {
     if (!done && typeof options === 'function') {
         done = options;
         options = null;

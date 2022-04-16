@@ -3,7 +3,7 @@
 const assert = require('chai').assert;
 const path = require('path');
 
-const loader = require('../app/loader');
+const loader = require('../index').loadPackage;
 
 describe("Loader", () => {
     it("Check module content", () => {

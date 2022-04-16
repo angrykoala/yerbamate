@@ -4,13 +4,6 @@
 // by @angrykoala
 // The js testing library for command-line interfaces.
 
-const kill = require('tree-kill');
-const runner = require('./app/runner');
-const loader = require('./app/loader');
+const main=require('./dist/main')
 
-module.exports = {
-    run: runner,
-    loadPackage: loader,
-    stop: (proc, cb) => kill(proc.pid, 'SIGKILL', cb),
-    successCode: (code) => code === 0
-};
+module.exports = main

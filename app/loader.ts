@@ -1,14 +1,12 @@
-"use strict";
 /*
 Loads all the scripts and binaries data from a module package.json
 >Based on [pkginfo](https://github.com/indexzero/node-pkginfo)
 */
-
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import fs from 'fs';
 
 class Loader {
-    static getContents(content, dir) {
+    static getContents(content: any, dir: any) {
         return {
             dir: dir,
             main: content.main ? "node " + content.main : undefined,
@@ -18,26 +16,26 @@ class Loader {
         };
     }
 
-    static moduleLoader(pmodule, dir) {
+    static moduleLoader(pmodule: any, dir?: any): any {
         dir = Loader.processDir(pmodule, dir);
         Loader.validateDir(pmodule, dir);
 
         let contents;
         try {
             contents = require(dir + '/package.json');
-        } catch (error) {}
+        } catch (error) { }
 
         return (contents) ? Loader.getContents(contents, dir) : Loader.moduleLoader(pmodule, path.dirname(dir));
     }
 
-    static processDir(pmodule, dir) {
+    static processDir(pmodule: any, dir?: any) {
         if (!dir) {
             dir = path.dirname(pmodule.filename || pmodule.id);
         }
         return dir;
     }
 
-    static validateDir(pmodule, dir) {
+    static validateDir(pmodule: any, dir: any) {
         if (dir === '/') {
             throw new Error('Could not find package.json up from ' + (pmodule.filename || pmodule.id));
         } else if (!dir || dir === '.') {
@@ -46,7 +44,7 @@ class Loader {
     }
 
 
-    static fileLoader(filepath) {
+    static fileLoader(filepath: any) {
         filepath = path.resolve(filepath);
         let contents;
         try {
@@ -59,7 +57,7 @@ class Loader {
 }
 
 
-module.exports = (pmodule) => {
+export function loader(pmodule: any) {
     if (!pmodule) throw new Error("yerbamate loader - Not module found");
     return (typeof pmodule === "string") ? Loader.fileLoader(pmodule) : Loader.moduleLoader(pmodule);
 };
