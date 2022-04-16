@@ -3,10 +3,14 @@
   "version": "3.0.0",
   "description": "Test oriented task runner library",
   "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "nyc mocha",
     "jshint": "jshint *.js app/*.js test/*.js",
-    "build": "tsc"
+    "tsc": "rm -rf dist && tsc"
   },
   "repository": {
     "type": "git",
