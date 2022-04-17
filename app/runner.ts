@@ -7,7 +7,6 @@ import untildify from 'untildify';
 type IOCallback = (value: string) => void
 
 type RunnerOptions = {
-    shell: boolean,
     args: Array<string> | string, // TODO: fixme
     env: Record<string, string>,
     maxOutputSize?: number
@@ -15,7 +14,7 @@ type RunnerOptions = {
     stderr?: IOCallback
 }
 
-type DoneCallback = (code: number, out: string[], err: string[]) => void
+type DoneCallback = (code: number | null, out: string[], err: string[]) => void
 type ProcessResult = ChildProcessWithoutNullStreams
 
 class Runner {
@@ -74,7 +73,7 @@ class Runner {
             errs += err;
         });
 
-        proc.on('close', (code: any, signal: any) => {
+        proc.on('close', (code: number | null, signal:  NodeJS.Signals | null) => {
             if (signal === "SIGTERM" && code === null) code = 143;
             if (done) done(code, Runner.filterOutput(outs), Runner.filterOutput(errs));
         });
