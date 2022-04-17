@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import yerbamate from '../main';
+import * as yerbamate from '..';
 import config from './config/config';
 
 describe("Main", () => {
@@ -15,17 +15,17 @@ describe("Main", () => {
     });
 
     it("Success Code", () => {
-        assert.ok(yerbamate.successCode);
-        assert.typeOf(yerbamate.successCode, 'function');
-        
-        assert.strictEqual(yerbamate.successCode(), false);
-        assert.strictEqual(yerbamate.successCode(0), true);
-        assert.strictEqual(yerbamate.successCode("0"), false);
-        assert.strictEqual(yerbamate.successCode(1), false);
-        assert.strictEqual(yerbamate.successCode(-1), false);
-        assert.strictEqual(yerbamate.successCode(false), false);
-        assert.strictEqual(yerbamate.successCode(true), false);
-        assert.strictEqual(yerbamate.successCode(2), false);
+        assert.ok(yerbamate.isSuccessCode);
+        assert.typeOf(yerbamate.isSuccessCode, 'function');
+
+        assert.strictEqual(yerbamate.isSuccessCode(), false);
+        assert.strictEqual(yerbamate.isSuccessCode(0), true);
+        assert.strictEqual(yerbamate.isSuccessCode("0"), false);
+        assert.strictEqual(yerbamate.isSuccessCode(1), false);
+        assert.strictEqual(yerbamate.isSuccessCode(-1), false);
+        assert.strictEqual(yerbamate.isSuccessCode(false), false);
+        assert.strictEqual(yerbamate.isSuccessCode(true), false);
+        assert.strictEqual(yerbamate.isSuccessCode(2), false);
     });
 
     it("Running from package.json", (done) => {

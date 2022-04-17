@@ -1,6 +1,6 @@
 {
   "name": "yerbamate",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Test oriented task runner library",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "nyc mocha",
+    "test": "npm run tsc && nyc mocha",
     "jshint": "jshint *.js app/*.js test/*.js",
     "tsc": "rm -rf dist && tsc --project tsconfig.build.json"
   },

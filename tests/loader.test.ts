@@ -1,9 +1,7 @@
 import path from 'path';
 import { assert } from 'chai';
 
-import yerbamate from '../main';
-
-const loader = yerbamate.loadPackage
+import {loadPackage as loader} from '..';
 
 describe("Loader", () => {
     it("Check module content", () => {

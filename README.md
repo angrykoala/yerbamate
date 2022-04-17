@@ -4,7 +4,7 @@ _by @angrykoala_
 
 [![npm version](https://badge.fury.io/js/yerbamate.svg)](https://badge.fury.io/js/yerbamate)
 
-> The js library for command-line testing.
+> The JavaScript library for command-line testing.
 
 Sometimes, you want to add automated tests for your CLI. With _Yerbamate_, you can test your CLI directly within your favorite testing framework like _mocha_ without the mess of creating scripts or child_process:
 
@@ -12,7 +12,7 @@ Sometimes, you want to add automated tests for your CLI. With _Yerbamate_, you c
 const yerbamate = require('yerbamate');
 
 yerbamate.run("cat my_file.md", (code, out, errs) => {
-    if (!yerbamate.successCode(code)) console.log("Error: " + errs[0]);
+    if (!yerbamate.isSuccessCode(code)) console.log("Error: " + errs[0]);
     else console.log("Success - " + out);
 });
 ```
@@ -26,17 +26,22 @@ With _yerbamate_ you can easily test commands from you JavaScript testing framew
 const yerbamate = require('yerbamate');
 
 yerbamate.run("cat my_file.md", (code, out, errs) => {
-    if (!yerbamate.successCode(code)) console.error("Error:", errs.join("\n")); // In case of errors, log stderr
+    if (!yerbamate.isSuccessCode(code)) console.error("Error:", errs.join("\n")); // In case of errors, log stderr
     else console.log("Success - ", out.join("\n")); // In case of success, log all the stdout output
 });
 ```
+
+## Features
+
+* TypeScript support.
+* Real-tip `stdio` updates.
 
 ## Usage
 Yerbamate comes with 4 functions:
 * `run` lets you run a command through a childProcess and handle its output.
 * `stop` to stop (kill) a running process.
 * `loadPackage` to load scripts in the project package.json for easy testing.
-* `successCode` to check the success code returned by `run`.
+* `isSuccessCode` to check the success code returned by `run`.
 
 ### Running scripts
 The command `yerbamate.run(command, dir, options, done)` will run the given command, as a string, in a child process, and send the results to the callback, once the
@@ -56,6 +61,8 @@ yebamate.run("pwd", "/home/angrykoala/", (code, out) => {
 ```
 The path will be processed before executing the command, to ensure it is standard across different environments. Tilde (`~`) is supported as the current user `home` directory.
 
+> NOTE: If `run` fails while spawning processes, it will return a `null` process and call `done` with error code `1` and the error message as part of the output.
+
 #### Options
 An object can be passed, optionally, as third argument, with options for the execution. The options are:
 
@@ -69,13 +76,13 @@ An object can be passed, optionally, as third argument, with options for the exe
 
 ```js
 yerbamate.run("bash my_script.sh", {
-    stdout: (data)=>{
+    stdout: (data) => {
         console.log("Output:", data);
     },
-    stderr: (err)=>{
+    stderr: (err) => {
         console.log("Error:", err)
     }
-}, ()=>{
+}, () => {
     // Note that the full output is still available in the callback, once the process has finished.
 });
 ```
@@ -104,7 +111,7 @@ const pkg = yerbamate.loadPackage(module); // module refers to the module being 
 yerbamate.run(pkg.start, pkg.dir, {
     args: "[my arguments]"
 }, (code, out, errs) => {
-    if (!yerbamate.successCode(code)) console.log("Process exited with error code");
+    if (!yerbamate.isSuccessCode(code)) console.log("Process exited with error code");
     console.log("Output: " + out[0]);
 });
 ```
@@ -122,6 +129,24 @@ The returned `pkg` object will contain the following fields:
 
 ```js
 const pkg = yerbamate.loadPackage("./my_project/package.json");
+```
+
+### Using TypeScript
+`yerbamate` is fully typed and supports TypeScript. take the following example:
+
+```ts
+import * as yerbamate from 'yerbamate';
+
+yerbamate.run("cat my_file.md", (code: number, out: string[], errs:string[]):void => {
+    if (!yerbamate.isSuccessCode(code)) console.log("Error: " + errs[0]);
+    else console.log("Success - " + out);
+});
+```
+
+`yerbamate` can also be partially imported:
+
+```ts
+import { run, stop } from 'yerbamate';
 ```
 
 ## Contributors

@@ -57,7 +57,7 @@ class Loader {
 }
 
 
-export function loader(pmodule: any) {
+export function loadPackage(pmodule: any) {
     if (!pmodule) throw new Error("yerbamate loader - Not module found");
     return (typeof pmodule === "string") ? Loader.fileLoader(pmodule) : Loader.moduleLoader(pmodule);
 };

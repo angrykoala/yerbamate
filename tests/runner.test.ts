@@ -1,8 +1,9 @@
 import path from 'path';
+import { ChildProcess } from 'child_process';
 import { assert } from 'chai';
 
 import config from './config/config';
-import yerbamate from '../main';
+import * as yerbamate from '..';
 
 const { run, stop } = yerbamate;
 
@@ -94,13 +95,13 @@ describe("Runner", () => {
         const proc = run("node", (code) => {
             assert.notEqual(code, 0);
             done();
-        });
+        }) as ChildProcess;
         assert.ok(proc);
         stop(proc);
     });
 
     it("Stop process callback", (done) => {
-        const proc = run("node", () => { });
+        const proc = run("node", () => { }) as ChildProcess;
         assert.ok(proc);
         stop(proc, function(err: any) {
             assert.notOk(err);
@@ -167,7 +168,7 @@ describe("Runner", () => {
     it("Execute script with max output", (done) => {
         run("node " + path.join(testDir, testScript), {
             maxOutputSize: 10
-        }, (code, outs, errs) => {
+        }, (_code, outs, errs) => {
             assert.lengthOf(outs, 2);
             assert.strictEqual(outs[0], "running");
             assert.strictEqual(outs[1], "2");

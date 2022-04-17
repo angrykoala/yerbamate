@@ -1,15 +1,20 @@
 // Yerbamate
 // by @angrykoala
-// The js testing library for command-line interfaces.
+// The JavaScript library for command-line testing.
 
 import kill from 'tree-kill';
+import { ChildProcess } from 'child_process';
 
-import { loader } from './app/loader';
-import { run } from './app/runner';
+type StopCallback = (error?: Error) => void;
 
-export default {
-    run,
-    loadPackage: loader,
-    stop: (proc: any, cb?: any) => kill(proc.pid, 'SIGKILL', cb),
-    successCode: (code?: any) => code === 0
-};
+export { run } from './app/runner';
+export { loadPackage } from './app/loader';
+
+export function stop(proc: ChildProcess, cb?: StopCallback): void {
+    if (proc.pid === undefined || proc.pid === null) throw new Error("[stop] Process pid is not defined");
+    kill(proc.pid, 'SIGKILL', cb);
+}
+
+export function isSuccessCode(code?: unknown): boolean {
+    return code === 0;
+}

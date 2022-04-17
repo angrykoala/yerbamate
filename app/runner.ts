@@ -49,7 +49,7 @@ class Runner {
         let proc: ChildProcessWithoutNullStreams;
         try {
             proc = childProcess.spawn(arr.shift() as string, arr, execOptions);
-        } catch (e: unknown) {
+        } catch (e: unknown) { // TODO: fixme
             done(1, [], [e as string]);
             return null;
         }
@@ -84,10 +84,10 @@ class Runner {
 
 
 
-export function run(command: string, done: DoneCallback): ProcessResult | null;
-export function run(command: string, dir: any, options: Record<string, any> | undefined, done: DoneCallback): ProcessResult;
-export function run(command: string, dir: any, done: DoneCallback): ProcessResult;
-export function run(command: string, dir?: any, options?: Record<string, any> | DoneCallback, done?: DoneCallback): ProcessResult | null {
+export function run(command: string, done: DoneCallback): ProcessResult | null ;
+export function run(command: string, dir: any, options: Record<string, any> | undefined, done: DoneCallback): ProcessResult | null;
+export function run(command: string, dir: any, done: DoneCallback): ProcessResult | null;
+export function run(command: string, dir?: any, options?: Record<string, any> | DoneCallback, done?: DoneCallback): ProcessResult | null  {
     if (!done && typeof options === 'function') {
         done = options as any;
         options = undefined;
