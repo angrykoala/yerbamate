@@ -4,9 +4,6 @@
 
 import kill from 'tree-kill';
 
-// const runner = require('./app/runner');
-// const loader = require('./app/loader');
-
 import { loader } from './app/loader';
 import { run } from './app/runner';
 

@@ -10,7 +10,7 @@
   "scripts": {
     "test": "nyc mocha",
     "jshint": "jshint *.js app/*.js test/*.js",
-    "tsc": "rm -rf dist && tsc"
+    "tsc": "rm -rf dist && tsc --project tsconfig.build.json"
   },
   "repository": {
     "type": "git",

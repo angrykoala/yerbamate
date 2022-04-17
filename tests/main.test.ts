@@ -3,8 +3,8 @@ import { assert } from 'chai';
 import yerbamate from '../main';
 import config from './config/config';
 
-describe("Yerbamate index", () => {
-    it("Main Functions", () => {
+describe("Main", () => {
+    it("Main Functions Exist", () => {
         assert.ok(yerbamate);
         assert.ok(yerbamate.run);
         assert.typeOf(yerbamate.run, 'function');
@@ -17,6 +17,7 @@ describe("Yerbamate index", () => {
     it("Success Code", () => {
         assert.ok(yerbamate.successCode);
         assert.typeOf(yerbamate.successCode, 'function');
+        
         assert.strictEqual(yerbamate.successCode(), false);
         assert.strictEqual(yerbamate.successCode(0), true);
         assert.strictEqual(yerbamate.successCode("0"), false);

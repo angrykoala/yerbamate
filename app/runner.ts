@@ -1,8 +1,22 @@
 "use strict";
 
 import path from 'path';
-import childProcess, { ChildProcess } from 'child_process';
+import childProcess, { ChildProcessWithoutNullStreams } from 'child_process';
 import untildify from 'untildify';
+
+type IOCallback = (value: string) => void
+
+type RunnerOptions = {
+    shell: boolean,
+    args: Array<string> | string, // TODO: fixme
+    env: Record<string, string>,
+    maxOutputSize?: number
+    stdout?: IOCallback,
+    stderr?: IOCallback
+}
+
+type DoneCallback = (code: number, out: string[], err: string[]) => void
+type ProcessResult = ChildProcessWithoutNullStreams
 
 class Runner {
 
@@ -15,15 +29,15 @@ class Runner {
         return path.resolve(dir);
     }
 
-    static runProcess(command: any, dir: any, options: any, done: any) {
+    static runProcess(command: string, dir: string, options: RunnerOptions, done: DoneCallback): ProcessResult | null {
         const execOptions: any = {
             shell: true
         };
-        let args = [];
+        let args: string[] = [];
         if (dir) execOptions.cwd = Runner.processPath(dir);
 
         if (options.args) {
-            if (options.args.constructor === Array) {
+            if (Array.isArray(options.args)) {
                 args = options.args;
             } else args = options.args.split(" ");
         }
@@ -33,11 +47,11 @@ class Runner {
         }
 
         const arr = command.split(" ").concat(args);
-        let proc;
+        let proc: ChildProcessWithoutNullStreams;
         try {
-            proc = childProcess.spawn(arr.shift(), arr, execOptions);
-        } catch (e) {
-            done(1, [], [e]);
+            proc = childProcess.spawn(arr.shift() as string, arr, execOptions);
+        } catch (e: unknown) {
+            done(1, [], [e as string]);
             return null;
         }
 
@@ -69,13 +83,12 @@ class Runner {
 }
 
 
-type DoneCallback = (code: number, out: string[], err: string[]) => void
 
 
-export function run(command: string, done: DoneCallback): ChildProcess | null;
-export function run(command: any, dir: any, options: Record<string, any> | undefined, done: DoneCallback): ChildProcess;
-export function run(command: any, dir: any, done: DoneCallback): ChildProcess;
-export function run(command: any, dir?: any, options?: Record<string, any> | DoneCallback, done?: DoneCallback): ChildProcess | null {
+export function run(command: string, done: DoneCallback): ProcessResult | null;
+export function run(command: string, dir: any, options: Record<string, any> | undefined, done: DoneCallback): ProcessResult;
+export function run(command: string, dir: any, done: DoneCallback): ProcessResult;
+export function run(command: string, dir?: any, options?: Record<string, any> | DoneCallback, done?: DoneCallback): ProcessResult | null {
     if (!done && typeof options === 'function') {
         done = options as any;
         options = undefined;
@@ -91,5 +104,5 @@ export function run(command: any, dir?: any, options?: Record<string, any> | Don
     }
     if (!options) options = {};
 
-    return Runner.runProcess(command, dir, options, done);
+    return Runner.runProcess(command, dir, options as RunnerOptions, done as DoneCallback);
 };
