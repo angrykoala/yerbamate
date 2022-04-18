@@ -1,9 +1,7 @@
-"use strict";
+import path from 'path';
+import { assert } from 'chai';
 
-const assert = require('chai').assert;
-const path = require('path');
-
-const loader = require('../app/loader');
+import { loadPackage as loader } from '../main';
 
 describe("Loader", () => {
     it("Check module content", () => {
@@ -11,7 +9,7 @@ describe("Loader", () => {
         const pkg = loader(module);
         assert.ok(pkg);
         assert.strictEqual(pkg.dir, path.join(__dirname, '..'));
-        assert.strictEqual(pkg.main, 'node index.js');
+        assert.strictEqual(pkg.main, 'node dist/main.js');
         assert.ok(pkg.scripts);
         assert.ok(pkg.scripts.test);
         assert.isUndefined(pkg.start);
@@ -21,9 +19,9 @@ describe("Loader", () => {
 
     it("Invalid module", () => {
         let pkg;
-        assert.throws(loader);
+        assert.throws(loader as any);
         try {
-            pkg = loader();
+            pkg = (loader as any)();
         } catch (e) {
             assert.ok(e);
             assert.notOk(pkg);
@@ -34,7 +32,7 @@ describe("Loader", () => {
         const pkg = loader(path.join(__dirname, "../package.json"));
         assert.ok(pkg);
         assert.strictEqual(pkg.dir, path.join(__dirname, '..'));
-        assert.strictEqual(pkg.main, 'node index.js');
+        assert.strictEqual(pkg.main, 'node dist/main.js');
         assert.ok(pkg.scripts);
         assert.ok(pkg.scripts.test);
         assert.isUndefined(pkg.start);
@@ -43,7 +41,7 @@ describe("Loader", () => {
     });
 
     it("Invalid path", () => {
-        assert.throws(loader);
+        assert.throws(loader as any);
         let pkg;
         try {
             pkg = loader("falsePath");
@@ -54,10 +52,10 @@ describe("Loader", () => {
     });
 
     it("Invalid module", () => {
-        assert.throws(loader);
+        assert.throws(loader as any);
         const testModule = {
             filename: "falsePath"
-        };
+        } as NodeModule;
         let pkg;
         try {
             pkg = loader(testModule);
@@ -70,7 +68,7 @@ describe("Loader", () => {
     it("Module with id", () => {
         const testModule = {
             id: path.join(__dirname, "./config/test_package.json")
-        };
+        } as NodeModule;
         const pkg = loader(testModule);
         assert.ok(pkg);
         assert.ok(pkg.scripts);

@@ -1,3 +1,12 @@
+4.0.0 / 2022-04-18
+==================
+
+* Stderr and stdout now return as a string
+* Typescript support
+* Process environment variables are always added
+* Environment variables set through settings will override process env variables
+* Exports changed to support TypeScript
+
 3.0.0 / 2021-08-05
 ==================
 

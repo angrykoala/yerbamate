@@ -1,16 +1,14 @@
-"use strict";
+import path from 'path';
+import { ChildProcess } from 'child_process';
+import { assert } from 'chai';
 
-const assert = require('chai').assert;
-const path = require('path');
+import config from './config/config';
+import * as yerbamate from '../main';
 
-const run = require('../app/runner.js');
-const stop = require('../index').stop;
+const { run, stop } = yerbamate;
 
-
-const config = require('./config/config');
 const testScript = config.testScript;
 const testDir = path.join(__dirname, "config");
-
 
 describe("Runner", () => {
     const checkDefaultOutput = config.checkDefaultOutput;
@@ -18,26 +16,29 @@ describe("Runner", () => {
     it("Execute script", (done) => {
         run("node " + path.join(testDir, testScript), (code, outs, errs) => {
             checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "2");
+            assert.strictEqual(outs.split("\n")[1], "2");
             done();
         });
     });
+
     it("Different directory", (done) => {
         run("node " + testScript, testDir, (code, outs, errs) => {
             checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "2");
+            assert.strictEqual(outs.split("\n")[1], "2");
             done();
         });
     });
+
     it("Execute command with args", (done) => {
         run("node " + testScript, testDir, {
             args: "myargument1 myargument2"
         }, function(code, outs, errs) {
             checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "4");
+            assert.strictEqual(outs.split("\n")[1], "4");
             done();
         });
     });
+
     it("Script returning error code", (done) => {
         run("node " + testScript, testDir, {
             args: "-error"
@@ -45,32 +46,29 @@ describe("Runner", () => {
             assert.ok(outs);
             assert.ok(errs);
             assert.strictEqual(code, 1);
-            assert.lengthOf(outs, 2);
-            assert.isAtLeast(errs.length, 2);
-            assert.strictEqual(outs[0], "Example js running");
-            assert.strictEqual(errs[0], "Warning example");
-            assert.strictEqual(outs[1], "3");
+            assert.strictEqual(outs, "Example js running\n3\n");
+            assert.strictEqual(errs.split("\n")[0], "Warning example");
             done();
         });
     });
+
     it("Invalid command", (done) => {
         run(testScript, testDir, (code, outs, errs) => {
             assert.notEqual(code, 0);
-            assert.lengthOf(outs, 0);
-            assert.lengthOf(errs, 1);
+            assert.strictEqual(outs, "");
+            assert.ok(errs);
             done();
         });
-
     });
 
-    it("Stout and stderr hooks", (done) => {
+    it("Stdout and stderr hooks", (done) => {
         let outTest = "";
         let errTest = "";
-        const onOut = (data) => {
+        const onOut = (data: any) => {
             assert.typeOf(data, "string");
             outTest += data;
         };
-        const onErr = (data) => {
+        const onErr = (data: any) => {
             assert.typeOf(data, "string");
             errTest += data;
         };
@@ -79,59 +77,60 @@ describe("Runner", () => {
             stdout: onOut,
             stderr: onErr
         }, function(code, outs, errs) {
-            outTest = outTest.split('\n').filter(Boolean);
-            errTest = errTest.split('\n').filter(Boolean);
             checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "2");
+            assert.strictEqual(outs.split("\n")[1], "2");
             checkDefaultOutput(code, outTest, errTest);
             done();
         });
     });
 
-    it("Stop process", (done) => {
-        const proc = run("node", (code) => {
-            assert.notEqual(code, 0);
-            done();
+    describe("stop", () => {
+        it("Stop process", (done) => {
+            const proc = run("node", (code) => {
+                assert.notEqual(code, 0);
+                done();
+            }) as ChildProcess;
+            assert.ok(proc);
+            stop(proc);
         });
-        assert.ok(proc);
-        stop(proc);
-    });
 
-    it("Stop process callback", (done) => {
-        const proc = run("node", () => {});
-        assert.ok(proc);
-        stop(proc, function(err) {
-            assert.notOk(err);
-            done();
+        it("Stop process callback", (done) => {
+            const proc = run("node", () => { }) as ChildProcess;
+            assert.ok(proc);
+            stop(proc, function(err: any) {
+                assert.notOk(err);
+                done();
+            });
         });
-    });
+
+        it("Throws if stop is called without pid", () => {
+            assert.throws(() => {
+                stop(undefined as any)
+            })
+            assert.throws(() => {
+                stop({ pid: undefined } as any)
+            })
+            assert.throws(() => {
+                stop({ pid: null } as any)
+            })
+        })
+    })
 
     it("Array arguments", (done) => {
         run("node " + testScript, testDir, {
             args: ["myargument1", "myargument2"]
         }, function(code, outs, errs) {
             checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "4");
-            done();
-        });
-    });
-
-    it("Execute script with undefined options and arguments", (done) => {
-        run("node " + path.join(testDir, testScript), undefined, undefined, (code, outs, errs) => {
-            checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "2");
+            assert.strictEqual(outs.split("\n")[1], "4");
             done();
         });
     });
 
     it("Execute envs defined in command", (done) => {
         run("testenv=dontpanic node print_env.js", testDir, (code, outs, errs) => {
-            assert.ok(outs);
-            assert.ok(errs);
             assert.strictEqual(code, 0);
-            assert.lengthOf(outs, 1);
-            assert.lengthOf(errs, 0);
-            assert.strictEqual(outs[0], "dontpanic");
+            assert.strictEqual(errs, "");
+            assert.strictEqual(outs, "dontpanic\n");
             done();
         });
     });
@@ -142,12 +141,9 @@ describe("Runner", () => {
                 testenv: "dontpanic"
             }
         }, (code, outs, errs) => {
-            assert.ok(outs);
-            assert.ok(errs);
             assert.strictEqual(code, 0);
-            assert.lengthOf(outs, 1);
             assert.lengthOf(errs, 0);
-            assert.strictEqual(outs[0], "dontpanic");
+            assert.strictEqual(outs, "dontpanic\n");
             done();
         });
     });
@@ -157,19 +153,24 @@ describe("Runner", () => {
             args: ["myargument1", "myargument2"]
         }, (code, outs, errs) => {
             checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "4");
+            assert.strictEqual(outs.split("\n")[1], "4");
             done();
         });
     });
 
     it("Execute script with max output", (done) => {
-        run("node " + path.join(testDir, testScript),{maxOutputSize: 10}, (code, outs, errs) => {
-            assert.lengthOf(outs, 2);
-            assert.strictEqual(outs[0], "running");
-            assert.strictEqual(outs[1], "2");
-            assert.lengthOf(errs, 1);
-            assert.strictEqual(errs[0], "g example");
+        run("node " + path.join(testDir, testScript), {
+            maxOutputSize: 10
+        }, (_code, outs, errs) => {
+            assert.strictEqual(outs, "running\n2\n");
+            assert.strictEqual(errs, "g example\n");
             done();
         });
     });
+
+    it("Throws if callback is not provided", ()=>{
+        assert.throws(()=>{
+            run("node "+ path.join(testDir, testScript), undefined as any);
+        })
+    })
 });

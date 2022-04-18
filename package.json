@@ -1,12 +1,18 @@
 {
   "name": "yerbamate",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Test oriented task runner library",
-  "main": "index.js",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "files": [
+    "app"
+  ],
   "scripts": {
     "test": "nyc mocha",
-    "jshint": "jshint *.js app/*.js test/*.js",
-    "posttest": "npm run jshint"
+    "test-js-export": "npm run tsc && node tests/export.test.js",
+    "tsc": "rm -rf dist && tsc --project tsconfig.build.json",
+    "prepublishOnly": "npm run tsc",
+    "html-coverage": "nyc report --reporter=html"
   },
   "repository": {
     "type": "git",
@@ -20,9 +26,6 @@
     "command",
     "line"
   ],
-  "files": [
-    "app"
-  ],
   "author": "angrykoala <angrykoala@outlook.es>",
   "license": "MIT",
   "bugs": {
@@ -30,13 +33,17 @@
   },
   "homepage": "https://github.com/angrykoala/yerbamate#readme",
   "devDependencies": {
-    "chai": "^4.3.4",
-    "jshint": "^2.13.0",
-    "mocha": "^9.0.3",
-    "nyc": "^15.1.0"
+    "@types/chai": "^4.3.1",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^17.0.24",
+    "chai": "^4.3.6",
+    "mocha": "^9.2.2",
+    "nyc": "^15.1.0",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
   },
   "engines": {
-    "node": ">= 6.16.0"
+    "node": ">= 12"
   },
   "dependencies": {
     "tree-kill": "^1.2.2",
