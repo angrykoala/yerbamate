@@ -1,7 +1,7 @@
 import path from 'path';
 import { assert } from 'chai';
 
-import {loadPackage as loader} from '..';
+import {loadPackage as loader} from '../main';
 
 describe("Loader", () => {
     it("Check module content", () => {

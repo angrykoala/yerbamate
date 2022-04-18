@@ -6,102 +6,119 @@ import untildify from 'untildify';
 
 type IOCallback = (value: string) => void
 
-type RunnerOptions = {
-    args: Array<string> | string, // TODO: fixme
-    env: Record<string, string>,
+export type RunSettings = {
+    args?: Array<string> | string,
+    env?: Record<string, string>,
     maxOutputSize?: number
     stdout?: IOCallback,
     stderr?: IOCallback
 }
 
-type DoneCallback = (code: number | null, out: string[], err: string[]) => void
+type ExecSettings = { shell: boolean, cwd?: string, env: Record<string, string> }
+
+type DoneCallback = (code: number | null, out: string, err: string) => void
 type ProcessResult = ChildProcessWithoutNullStreams
 
-class Runner {
+export function run(command: string, done: DoneCallback): ProcessResult | null;
+export function run(command: string, path: string, done: DoneCallback): ProcessResult | null;
+export function run(command: string, settings: RunSettings, done: DoneCallback): ProcessResult | null;
+export function run(command: string, path: string, settings: RunSettings, done: DoneCallback): ProcessResult | null;
+export function run(command: string, pathOrSettingsOrCallback: string | DoneCallback | RunSettings, settingsOrCallback?: RunSettings | DoneCallback, done?: DoneCallback): ProcessResult | null {
+    const executionPath = typeof pathOrSettingsOrCallback === "string" ? pathOrSettingsOrCallback : undefined;
+    let executionCallback: DoneCallback | undefined = done
+    let executionSettings: RunSettings = {}
 
-    static filterOutput(out: any) {
-        return out.split('\n').filter(Boolean);
+
+    if (settingsOrCallback && typeof settingsOrCallback !== 'function') {
+        executionSettings = settingsOrCallback;
+    } else if (typeof pathOrSettingsOrCallback !== "string" && typeof pathOrSettingsOrCallback !== 'function') {
+        executionSettings = pathOrSettingsOrCallback
+    }
+    if (!done && typeof settingsOrCallback === 'function') {
+        executionCallback = settingsOrCallback
+    } else if (!settingsOrCallback && typeof pathOrSettingsOrCallback === 'function') {
+        executionCallback = pathOrSettingsOrCallback
     }
 
-    static processPath(dir: any) {
-        dir = untildify(dir).trim();
-        return path.resolve(dir);
+    if (!executionCallback) {
+        throw new Error("Invalid done callback for run.");
     }
 
-    static runProcess(command: string, dir: string, options: RunnerOptions, done: DoneCallback): ProcessResult | null {
-        const execOptions: any = {
-            shell: true
-        };
-        let args: string[] = [];
-        if (dir) execOptions.cwd = Runner.processPath(dir);
+    return runProcess(command, executionPath, executionSettings, executionCallback);
+};
 
-        if (options.args) {
-            if (Array.isArray(options.args)) {
-                args = options.args;
-            } else args = options.args.split(" ");
+function runProcess(rawCommand: string, path: string | undefined, settings: RunSettings, done: DoneCallback): ProcessResult | null {
+    const execSettings: ExecSettings = {
+        shell: true,
+        env: Object.assign(process.env, settings.env || {}),
+        cwd: path ? processPath(path) : undefined
+    };
+
+    const { command, args } = prepareCommandAndArgs(rawCommand, settings.args)
+    let proc: ChildProcessWithoutNullStreams;
+    try {
+        proc = childProcess.spawn(command, args, execSettings);
+    } catch (e: unknown) {
+        let errorMessage = `${e}`
+        if (e instanceof Error) {
+            errorMessage = e.message
         }
 
-        if (options.env) {
-            execOptions.env = Object.assign(options.env, process.env);
+        done(1, "", errorMessage);
+        return null;
+    }
+
+    setProcessHooks(proc, settings, done);
+    return proc;
+}
+
+function setProcessHooks(proc: ChildProcessWithoutNullStreams, settings: RunSettings, done: DoneCallback) {
+    let outs = "";
+    let errs = "";
+
+    proc.stdout.on('data', (data: string) => {
+        outs += data;
+        if (settings.maxOutputSize) outs = outs.slice(-settings.maxOutputSize);
+        if (settings.stdout) settings.stdout(data.toString());
+    });
+
+    proc.stderr.on('data', (data: string) => {
+        errs += data;
+        if (settings.maxOutputSize) errs = errs.slice(-settings.maxOutputSize);
+        if (settings.stderr) settings.stderr(data.toString());
+    });
+
+    proc.on('error', (err: string) => {
+        errs += err;
+    });
+
+    proc.on('close', (code: number | null, signal: NodeJS.Signals | null) => {
+        if (signal === "SIGTERM" && code === null) code = 143;
+        done(code, outs, errs);
+    });
+}
+
+function prepareCommandAndArgs(commandStr: string, extraArgs: string | Array<string> | undefined): { command: string, args: Array<string> } {
+    let settingsArgs: string[] = [];
+
+    if (extraArgs) {
+        if (Array.isArray(extraArgs)) {
+            settingsArgs = extraArgs
+        } else {
+            settingsArgs = extraArgs.split(" ");
         }
+    }
 
-        const arr = command.split(" ").concat(args);
-        let proc: ChildProcessWithoutNullStreams;
-        try {
-            proc = childProcess.spawn(arr.shift() as string, arr, execOptions);
-        } catch (e: unknown) { // TODO: fixme
-            done(1, [], [e as string]);
-            return null;
-        }
+    const argTokens = commandStr.split(" ").concat(settingsArgs)
+    const mainCommand = argTokens.shift() as string;
 
-        let outs = "";
-        let errs = "";
-
-        proc.stdout.on('data', (data: any) => {
-            outs += data;
-            if (options.maxOutputSize) outs = outs.slice(-options.maxOutputSize);
-            if (options.stdout) options.stdout(data.toString());
-        });
-
-        proc.stderr.on('data', (data: any) => {
-            errs += data;
-            if (options.maxOutputSize) errs = errs.slice(-options.maxOutputSize);
-            if (options.stderr) options.stderr(data.toString());
-        });
-
-        proc.on('error', (err: any) => {
-            errs += err;
-        });
-
-        proc.on('close', (code: number | null, signal:  NodeJS.Signals | null) => {
-            if (signal === "SIGTERM" && code === null) code = 143;
-            if (done) done(code, Runner.filterOutput(outs), Runner.filterOutput(errs));
-        });
-        return proc;
+    return {
+        command: mainCommand,
+        args: argTokens
     }
 }
 
-
-
-
-export function run(command: string, done: DoneCallback): ProcessResult | null ;
-export function run(command: string, dir: any, options: Record<string, any> | undefined, done: DoneCallback): ProcessResult | null;
-export function run(command: string, dir: any, done: DoneCallback): ProcessResult | null;
-export function run(command: string, dir?: any, options?: Record<string, any> | DoneCallback, done?: DoneCallback): ProcessResult | null  {
-    if (!done && typeof options === 'function') {
-        done = options as any;
-        options = undefined;
-    }
-    if (!done && !options && typeof dir === 'function') {
-        done = dir;
-        dir = undefined;
-        options = undefined;
-    }
-    if (!options && typeof dir === 'object') {
-        options = dir;
-        dir = undefined;
-    }
-    if (!options) options = {};
-
-    return Runner.runProcess(command, dir, options as RunnerOptions, done as DoneCallback);
-};
+function processPath(dir: string): string {
+    dir = untildify(dir).trim();
+    return path.resolve(dir);
+}

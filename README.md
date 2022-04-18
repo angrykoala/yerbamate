@@ -12,7 +12,7 @@ Sometimes, you want to add automated tests for your CLI. With _Yerbamate_, you c
 const yerbamate = require('yerbamate');
 
 yerbamate.run("cat my_file.md", (code, out, errs) => {
-    if (!yerbamate.isSuccessCode(code)) console.log("Error: " + errs[0]);
+    if (!yerbamate.isSuccessCode(code)) console.log("Error: " + errs);
     else console.log("Success - " + out);
 });
 ```
@@ -44,19 +44,19 @@ Yerbamate comes with 4 functions:
 * `isSuccessCode` to check the success code returned by `run`.
 
 ### Running scripts
-The command `yerbamate.run(command, dir, options, done)` will run the given command, as a string, in a child process, and send the results to the callback, once the
+The command `yerbamate.run(command, path, settings, done)` will run the given command, as a string, in a child process, and send the results to the callback, once the
 task has _stopped_, _errored_ or _finished_. `run` will also return the `ChildProcess` executing the task.
 
 The callback receives 3 arguments:
 * `code`: The status code, as a number (if available). Code `0` means the task has finished successfully. The code `143` will be returned if the task have being killed with `stop`.
-* `out`: An array of strings, one per each line of `stdout` output. If the process has no output, this variable will be an empty array.
-* `err`:  An array of strings, one per each line of `stderr` output. Note that an error in the process execution does not guarantee this array will contain any output.
+* `out`: A string containing `stdout` output. If the process has no output, this variable will be an empty string.
+* `err`:  A string containing `stderr` output. Note that an error in the process execution does not guarantee this string will contain any output.
 
 Optionally, `run` can receive a `path` argument, a string to define the path in which to run the command:
 
 ```js
 yebamate.run("pwd", "/home/angrykoala/", (code, out) => {
-    console.log(out.join("\n")); // /home/angrykoala/
+    console.log(out); // /home/angrykoala/
 })
 ```
 The path will be processed before executing the command, to ensure it is standard across different environments. Tilde (`~`) is supported as the current user `home` directory.
@@ -64,12 +64,12 @@ The path will be processed before executing the command, to ensure it is standar
 > NOTE: If `run` fails while spawning processes, it will return a `null` process and call `done` with error code `1` and the error message as part of the output.
 
 #### Options
-An object can be passed, optionally, as third argument, with options for the execution. The options are:
+An object can be passed, optionally, as third argument, with settings for the execution. All settings are optional:
 
-* `args` An array or string of the arguments to be passed to the command.
+* `args` An array or string of arguments to be passed to the command.
 * `stdout` Callback for `stdout` events. This lets real-time updates of the `stdout` output. This callback receives a string.
 * `stderr` Callback for `stderr` events. This allows for real-time updates of the `stderr` output. This callback receives a string.
-* `env` Environment variables to be set when the command is executed. Note that `child_process` may also have extra env variables.
+* `env` Environment variables to be set when the command is executed. Note that env variables from the current process will always be added, variables set through this setting will override default env variables.
 * `maxOutputSize` Sets the maximum output that will be returned to the `done` callback, only the last characters will be sent. If none is set, all the output will be returned. Characters count also takes in account new line characters.
 
 #### Using real-time updates of stdio
@@ -112,7 +112,7 @@ yerbamate.run(pkg.start, pkg.dir, {
     args: "[my arguments]"
 }, (code, out, errs) => {
     if (!yerbamate.isSuccessCode(code)) console.log("Process exited with error code");
-    console.log("Output: " + out[0]);
+    console.log("Output: " + out);
 });
 ```
 
@@ -137,8 +137,8 @@ const pkg = yerbamate.loadPackage("./my_project/package.json");
 ```ts
 import * as yerbamate from 'yerbamate';
 
-yerbamate.run("cat my_file.md", (code: number, out: string[], errs:string[]):void => {
-    if (!yerbamate.isSuccessCode(code)) console.log("Error: " + errs[0]);
+yerbamate.run("cat my_file.md", (code: number, out: string, errs: string):void => {
+    if (!yerbamate.isSuccessCode(code)) console.log("Error: " + errs);
     else console.log("Success - " + out);
 });
 ```
@@ -148,6 +148,15 @@ yerbamate.run("cat my_file.md", (code: number, out: string[], errs:string[]):voi
 ```ts
 import { run, stop } from 'yerbamate';
 ```
+
+## Development
+To develop for `yerbamate`:
+
+1. Clone or fork this repository
+2. Run `npm install` (Node 12 or higher and npm must be installed).
+3. Run tests with `npm test`
+    * Test coverage in html format can be generated afterwards with `npm run html-coverage`
+4. Compile wiht `npm run tsc`
 
 ## Contributors
 If you want to contribute to yerbamate please:

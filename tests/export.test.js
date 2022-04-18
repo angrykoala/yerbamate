@@ -5,13 +5,11 @@ const {
     run
 } = require('..');
 
-describe("Main Export As JavaScript", () => {
-    it("Main Functions Exist", () => {
-        assert.ok(yerbamate);
-        assert.ok(yerbamate.loadPackage);
-        assert.ok(yerbamate.run);
-        assert.ok(yerbamate.stop);
-        assert.ok(yerbamate.isSuccessCode);
-        assert.ok(run);
-    });
-});
+assert.ok(yerbamate);
+assert.ok(yerbamate.loadPackage);
+assert.ok(yerbamate.run);
+assert.ok(yerbamate.stop);
+assert.ok(yerbamate.isSuccessCode);
+assert.ok(run);
+
+console.log("JavaScript export is OK")

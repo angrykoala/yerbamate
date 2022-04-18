@@ -11,7 +11,9 @@ export { run } from './app/runner';
 export { loadPackage } from './app/loader';
 
 export function stop(proc: ChildProcess, cb?: StopCallback): void {
-    if (proc.pid === undefined || proc.pid === null) throw new Error("[stop] Process pid is not defined");
+    if (!proc || proc.pid === undefined || proc.pid === null) {
+        throw new Error("[stop] Process pid is not defined");
+    }
     kill(proc.pid, 'SIGKILL', cb);
 }
 

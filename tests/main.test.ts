@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import * as yerbamate from '..';
+import * as yerbamate from '../main';
 import config from './config/config';
 
 describe("Main", () => {
@@ -31,12 +31,12 @@ describe("Main", () => {
     it("Running from package.json", (done) => {
         const pkg = yerbamate.loadPackage(__dirname + '/config/test_package.json');
         assert.ok(pkg);
-        yerbamate.run(pkg.start, pkg.dir, {}, (code: any, outs: any, errs: any) => {
+        yerbamate.run(pkg.start, pkg.dir, {}, (code, outs, errs) => {
             config.checkDefaultOutput(code, outs, errs);
-            assert.strictEqual(outs[1], "2");
-            yerbamate.run(pkg.main, pkg.dir, {}, (code: any, outs: any, errs: any) => {
+            assert.strictEqual(outs.split("\n")[1], "2");
+            yerbamate.run(pkg.main, pkg.dir, {}, (code, outs, errs) => {
                 config.checkDefaultOutput(code, outs, errs);
-                assert.strictEqual(outs[1], "2");
+                assert.strictEqual(outs.split("\n")[1], "2");
                 done();
             });
         });
