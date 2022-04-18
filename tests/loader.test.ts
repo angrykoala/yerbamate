@@ -1,7 +1,7 @@
 import path from 'path';
 import { assert } from 'chai';
 
-import {loadPackage as loader} from '../main';
+import { loadPackage as loader } from '../main';
 
 describe("Loader", () => {
     it("Check module content", () => {
@@ -55,7 +55,7 @@ describe("Loader", () => {
         assert.throws(loader as any);
         const testModule = {
             filename: "falsePath"
-        };
+        } as NodeModule;
         let pkg;
         try {
             pkg = loader(testModule);
@@ -68,7 +68,7 @@ describe("Loader", () => {
     it("Module with id", () => {
         const testModule = {
             id: path.join(__dirname, "./config/test_package.json")
-        };
+        } as NodeModule;
         const pkg = loader(testModule);
         assert.ok(pkg);
         assert.ok(pkg.scripts);

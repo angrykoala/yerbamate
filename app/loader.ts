@@ -1,63 +1,74 @@
 /*
 Loads all the scripts and binaries data from a module package.json
->Based on [pkginfo](https://github.com/indexzero/node-pkginfo)
+> Based on [pkginfo](https://github.com/indexzero/node-pkginfo)
 */
 import path from 'path';
 import fs from 'fs';
 
-class Loader {
-    static getContents(content: any, dir: any) {
-        return {
-            dir: dir,
-            main: content.main ? "node " + content.main : undefined,
-            start: content.scripts ? content.scripts.start : undefined,
-            bin: content.bin || {},
-            scripts: content.scripts || {}
-        };
-    }
 
-    static moduleLoader(pmodule: any, dir?: any): any {
-        dir = Loader.processDir(pmodule, dir);
-        Loader.validateDir(pmodule, dir);
+type PackageJSON = {
+    main?: string,
+    scripts?: Record<string, string>,
+    bin?: Record<string, string>
+}
 
-        let contents;
-        try {
-            contents = require(dir + '/package.json');
-        } catch (error) { }
+export type PackageData = {
+    dir: string,
+    main?: string,
+    start?: string,
+    bin: Record<string, string>,
+    scripts: Record<string, string>
+}
 
-        return (contents) ? Loader.getContents(contents, dir) : Loader.moduleLoader(pmodule, path.dirname(dir));
-    }
+export function loadPackage(pmodule: string | NodeModule) {
+    if (!pmodule) throw new Error("yerbamate loader - Not module found");
+    return (typeof pmodule === "string") ? fileLoader(pmodule) : moduleLoader(pmodule);
+};
 
-    static processDir(pmodule: any, dir?: any) {
-        if (!dir) {
-            dir = path.dirname(pmodule.filename || pmodule.id);
-        }
-        return dir;
-    }
+function fileLoader(filepath: string): PackageData {
+    filepath = path.resolve(filepath);
+    const contents = fs.readFileSync(filepath, 'utf-8');
+    return getContents(JSON.parse(contents) as PackageJSON, path.dirname(filepath));
+}
 
-    static validateDir(pmodule: any, dir: any) {
-        if (dir === '/') {
-            throw new Error('Could not find package.json up from ' + (pmodule.filename || pmodule.id));
-        } else if (!dir || dir === '.') {
-            throw new Error('Cannot find package.json from unspecified directory');
-        }
-    }
+function getContents(content: PackageJSON, dir: string): PackageData {
+    return {
+        dir: dir,
+        main: content.main ? `node ${content.main}` : undefined,
+        start: content.scripts ?.start,
+        bin: content.bin || {},
+        scripts: content.scripts || {}
+    };
+}
 
+function moduleLoader(pmodule: NodeModule, filePath?: string): PackageData {
+    const dirPath = processDir(pmodule, filePath);
+    validateDir(pmodule, dirPath);
 
-    static fileLoader(filepath: any) {
-        filepath = path.resolve(filepath);
-        let contents;
-        try {
-            contents = fs.readFileSync(filepath, 'utf-8');
-        } catch (error) {
-            throw error;
-        }
-        return Loader.getContents(JSON.parse(contents), path.dirname(filepath));
+    let contents: PackageJSON | undefined;
+    try {
+        contents = require(dirPath + '/package.json');
+    } catch (error) { }
+
+    if (contents) {
+        return getContents(contents, dirPath);
+    } else {
+        const parentPath = path.dirname(dirPath);
+        return moduleLoader(pmodule, parentPath);
     }
 }
 
+function processDir(pmodule: NodeModule, dir: string | undefined): string {
+    if (!dir) {
+        return path.dirname(pmodule.filename || pmodule.id);
+    }
+    return dir;
+}
 
-export function loadPackage(pmodule: any) {
-    if (!pmodule) throw new Error("yerbamate loader - Not module found");
-    return (typeof pmodule === "string") ? Loader.fileLoader(pmodule) : Loader.moduleLoader(pmodule);
-};
+function validateDir(pmodule: NodeModule, dir: string): void {
+    if (dir === '/') {
+        throw new Error('Could not find package.json up from ' + (pmodule.filename || pmodule.id));
+    } else if (!dir || dir === '.') {
+        throw new Error('Cannot find package.json from unspecified directory');
+    }
+}

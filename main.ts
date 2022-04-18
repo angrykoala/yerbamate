@@ -7,8 +7,8 @@ import { ChildProcess } from 'child_process';
 
 type StopCallback = (error?: Error) => void;
 
-export { run } from './app/runner';
-export { loadPackage } from './app/loader';
+export { run, RunSettings } from './app/runner';
+export { loadPackage, PackageData } from './app/loader';
 
 export function stop(proc: ChildProcess, cb?: StopCallback): void {
     if (!proc || proc.pid === undefined || proc.pid === null) {

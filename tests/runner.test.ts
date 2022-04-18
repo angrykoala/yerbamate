@@ -10,7 +10,6 @@ const { run, stop } = yerbamate;
 const testScript = config.testScript;
 const testDir = path.join(__dirname, "config");
 
-
 describe("Runner", () => {
     const checkDefaultOutput = config.checkDefaultOutput;
 

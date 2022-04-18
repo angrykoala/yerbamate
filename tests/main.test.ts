@@ -31,10 +31,12 @@ describe("Main", () => {
     it("Running from package.json", (done) => {
         const pkg = yerbamate.loadPackage(__dirname + '/config/test_package.json');
         assert.ok(pkg);
-        yerbamate.run(pkg.start, pkg.dir, {}, (code, outs, errs) => {
+        assert.ok(pkg.start);
+        assert.ok(pkg.main);
+        yerbamate.run(pkg.start as string, pkg.dir, {}, (code, outs, errs) => {
             config.checkDefaultOutput(code, outs, errs);
             assert.strictEqual(outs.split("\n")[1], "2");
-            yerbamate.run(pkg.main, pkg.dir, {}, (code, outs, errs) => {
+            yerbamate.run(pkg.main as string, pkg.dir, {}, (code, outs, errs) => {
                 config.checkDefaultOutput(code, outs, errs);
                 assert.strictEqual(outs.split("\n")[1], "2");
                 done();

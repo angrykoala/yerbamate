@@ -72,6 +72,26 @@ function runProcess(rawCommand: string, path: string | undefined, settings: RunS
     return proc;
 }
 
+function prepareCommandAndArgs(commandStr: string, extraArgs: string | Array<string> | undefined): { command: string, args: Array<string> } {
+    let settingsArgs: string[] = [];
+
+    if (extraArgs) {
+        if (Array.isArray(extraArgs)) {
+            settingsArgs = extraArgs
+        } else {
+            settingsArgs = extraArgs.split(" ");
+        }
+    }
+
+    const argTokens = commandStr.split(" ").concat(settingsArgs)
+    const mainCommand = argTokens.shift() as string;
+
+    return {
+        command: mainCommand,
+        args: argTokens
+    }
+}
+
 function setProcessHooks(proc: ChildProcessWithoutNullStreams, settings: RunSettings, done: DoneCallback) {
     let outs = "";
     let errs = "";
@@ -96,26 +116,6 @@ function setProcessHooks(proc: ChildProcessWithoutNullStreams, settings: RunSett
         if (signal === "SIGTERM" && code === null) code = 143;
         done(code, outs, errs);
     });
-}
-
-function prepareCommandAndArgs(commandStr: string, extraArgs: string | Array<string> | undefined): { command: string, args: Array<string> } {
-    let settingsArgs: string[] = [];
-
-    if (extraArgs) {
-        if (Array.isArray(extraArgs)) {
-            settingsArgs = extraArgs
-        } else {
-            settingsArgs = extraArgs.split(" ");
-        }
-    }
-
-    const argTokens = commandStr.split(" ").concat(settingsArgs)
-    const mainCommand = argTokens.shift() as string;
-
-    return {
-        command: mainCommand,
-        args: argTokens
-    }
 }
 
 function processPath(dir: string): string {

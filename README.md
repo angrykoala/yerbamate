@@ -131,6 +131,8 @@ The returned `pkg` object will contain the following fields:
 const pkg = yerbamate.loadPackage("./my_project/package.json");
 ```
 
+If a path is passed, `loadPackage` will recursively look up for a `package.json`.
+
 ### Using TypeScript
 `yerbamate` is fully typed and supports TypeScript. take the following example:
 
