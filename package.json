@@ -1,11 +1,11 @@
 {
   "name": "yerbamate",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Test oriented task runner library",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "files": [
-    "app"
+    "dist"
   ],
   "scripts": {
     "test": "nyc mocha",
